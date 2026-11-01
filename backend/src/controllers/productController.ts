@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import conn from "../config/db.js";
+import { generateCode } from "../utils/generateCode.js";
 
 // interface para Produtos
 interface Products {
@@ -43,22 +44,38 @@ export async function getProducts(req: Request, res: Response) {
 // Função que é usadas para cadastrar produtos
 export async function postProducts(req: Request, res: Response){
     try {
-        const { codProduct, nameProduct, mark, price, idCategory } = req.body as Products;
-        const sql: string = `
-            INSERT INTO products(codProduct, name, mark, price, idCategory) VALUES(?, ?, ?, ?, ?);
+
+        let codProduct = "";
+        let exists = true;
+        let attempts = 0;
+
+        while (exists && attempts < 5) {
+            codProduct = generateCode(10000000, 90000000);
+
+            const [response] = await conn.query<RowDataPacket[]>("SELECT * FROM products WHERE codProduct = ?", [codProduct]);
+
+            exists = response.length > 0;
+            attempts++;
+        }
+
+        const { nameProduct, mark, price, idCategory } = req.body as Products;
+
+        const sql = `
+            INSERT INTO products(codProduct, name, mark, price, idCategory)
+            VALUES (?, ?, ?, ?, ?)
         `;
 
-        const response = await conn.query(sql, [codProduct, nameProduct, mark, price, idCategory]);
+        await conn.query(sql, [codProduct, nameProduct, mark, price, idCategory]);
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: "Produto cadastrado com sucesso!"
         });
+
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             success: false,
-            messagem: "Erro ao cadastrar produto!"
+            message: "Erro ao cadastrar produto!"
         });
     }
 }
@@ -101,6 +118,8 @@ export async function deleteProduct(req: Request, res: Response){
     }
 }
 
+
+// Função usada para editar produtos
 export async function updateProduct(req: Request, res: Response){
     const { codProduct } = req.params;  
 
@@ -139,6 +158,7 @@ export async function updateProduct(req: Request, res: Response){
     }
 }
 
+// Função usada para buscar produtos tanto por Código do Produto quanto pelo próprio nome
 export async function searchProduct(req: Request, res: Response) {
     const { codProduct, nameProduct } = req.query;
     
