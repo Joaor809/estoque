@@ -88,7 +88,7 @@ export async function postProducts(req: Request, res: Response){
 }
 
 // Função que é usada para deletar produtos
-export async function deleteProduct(req: Request, res: Response){
+export async function deleteProducts(req: Request, res: Response){
     const { codProduct } = req.params;
     
     if (!codProduct) {
@@ -127,7 +127,7 @@ export async function deleteProduct(req: Request, res: Response){
 
 
 // Função usada para editar produtos
-export async function updateProduct(req: Request, res: Response){
+export async function updateProducts(req: Request, res: Response){
     const { codProduct } = req.params;  
 
     const { nameProduct, mark, price, idCategory } = req.body as Products;
@@ -172,7 +172,7 @@ export async function updateProduct(req: Request, res: Response){
 }
 
 // Função usada para buscar produtos tanto por Código do Produto quanto pelo próprio nome
-export async function searchProduct(req: Request, res: Response) {
+export async function searchProducts(req: Request, res: Response) {
     const { codProduct, nameProduct } = req.query;
     
     const code = String(codProduct || "");
