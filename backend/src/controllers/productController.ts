@@ -227,3 +227,36 @@ export async function searchProducts(req: Request, res: Response) {
         });
     }
 }
+
+export async function getProductsByCategory(req: Request, res: Response){
+    const { idCategory } = req.params;
+
+    if (!idCategory) {
+        return res.status(400).json({
+            success: false,
+            message: "ID da categoria não informado"
+        });
+    }
+
+    try {
+        const sql: string = `
+            SELECT p.codProduct, p.name, p.mark, p.price, c.name AS "category"
+            FROM products AS p
+            INNER JOIN categorys AS c ON c.idCategory = p.idCategory
+            WHERE c.idCategory = ?
+            ORDER BY p.name ASC;
+        `;
+
+        const [response] = await conn.query<RowDataPacket[]>(sql, [idCategory]);
+        
+        return res.status(200).json({
+            success: true,
+            data: response
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar produtos."
+        });
+    }
+}
