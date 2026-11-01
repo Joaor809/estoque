@@ -41,6 +41,39 @@ export async function getProducts(req: Request, res: Response) {
     }
 }
 
+export async function getProduct(req: Request, res: Response){
+    const { codProduct } = req.params;
+
+    if (!codProduct) {
+        return res.status(400).json({
+            success: false,
+            message: "Código do produto não informado."
+        });
+    }
+
+    try {
+        const [response] = await conn.query<RowDataPacket[]>("SELECT * FROM products WHERE codProduct = ?", [codProduct]);
+        
+        if (response.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Produto não encontrado."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: response[0]
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar produto."
+        });
+    }
+}
+
 // Função que é usadas para cadastrar produtos
 export async function postProducts(req: Request, res: Response){
     try {
