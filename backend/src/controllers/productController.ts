@@ -30,7 +30,7 @@ export async function getProducts(req: Request, res: Response) {
         }
         return res.status(200).json({
             success: true,
-            products
+            data: products
         });
 
     } catch(error) {
@@ -59,6 +59,13 @@ export async function postProducts(req: Request, res: Response){
         }
 
         const { nameProduct, mark, price, idCategory } = req.body as Products;
+
+        if (!nameProduct || !mark || !price || !idCategory) {
+            return res.status(500).json({
+                success: false,
+                message: "Preencha todos os campos!"
+            });
+        }
 
         const sql = `
             INSERT INTO products(codProduct, name, mark, price, idCategory)
@@ -129,6 +136,12 @@ export async function updateProduct(req: Request, res: Response){
         return res.status(400).json({
             success: false,
             message: "Código do produto não informado!"
+        });
+    }
+    if (!nameProduct || !mark || !price || idCategory) {
+        return res.status(500).json({
+            success: true,
+            message: "Preencha todos os campos!"
         });
     }
 
