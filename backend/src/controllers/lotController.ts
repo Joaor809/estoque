@@ -37,7 +37,7 @@ export async function getLots(req: Request, res: Response) {
 }
 
 // Função usada para pegar um lote pelo seu código
-export async function getLot(req: Request, res: Response) {
+export async function getLotByCodLot(req: Request, res: Response) {
     const { codLot } = req.params;
 
     if (!codLot) {
@@ -186,6 +186,34 @@ export async function updateLots(req: Request, res: Response) {
         return res.status(500).json({
             success: false,
             message: "Erro ao atualizar lote."
+        });
+    }
+}
+
+export async function deleteLots(req: Request, res: Response) {
+    const { codLot } = req.params;
+
+    if (!codLot) {
+        return res.status(400).json({
+            success: false,
+            message: "Código do lote não fornecido."
+        });
+    }
+
+    try {
+        const sql: string = "DELETE FROM lots WHERE codLot = ?;";
+
+        await conn.query(sql, [codLot]);
+
+        return res.status(400).json({
+            success: true,
+            message: "Lote deletado com sucesso!"
+        });
+        
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Erro ao deletar lote."
         });
     }
 }

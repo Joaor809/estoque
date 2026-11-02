@@ -9,7 +9,7 @@ create table if not exists categorys(
 );
 
 create table if not exists products(
-    codProduct int primary key unique,
+    codProduct char(5) primary key unique,
     name varchar(100) not null,
     mark varchar(50) not null,
     price decimal(10,2) not null,

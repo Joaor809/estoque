@@ -5,6 +5,7 @@ import session from "express-session";
 import jwt from "jsonwebtoken";
 import Product from "./routes/Products.js";
 import Categorys from "./routes/Categorys.js";
+import Lots from "./routes/Lots.js";
 
 dotenv.config()
 
@@ -15,6 +16,7 @@ server.use(cors())
 
 server.use("/products", Product)
 server.use("/categorys", Categorys)
+server.use("/lots", Lots)
 
 const port: number = Number(process.env.PORT);
 
