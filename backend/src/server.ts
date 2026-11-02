@@ -6,17 +6,19 @@ import jwt from "jsonwebtoken";
 import Product from "./routes/Products.js";
 import Categorys from "./routes/Categorys.js";
 import Lots from "./routes/Lots.js";
+import Sale from "./routes/Sale.js";
 
 dotenv.config()
 
 const server = express();
 
-server.use(express.json())
-server.use(cors())
+server.use(express.json());
+server.use(cors());
 
-server.use("/products", Product)
-server.use("/categorys", Categorys)
-server.use("/lots", Lots)
+server.use("/products", Product);
+server.use("/categorys", Categorys);
+server.use("/lots", Lots);
+server.use("/sales", Sale);
 
 const port: number = Number(process.env.PORT);
 

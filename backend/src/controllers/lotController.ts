@@ -52,7 +52,7 @@ export async function getLotByCodLot(req: Request, res: Response) {
             SELECT l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate
             FROM lots AS l
             INNER JOIN products AS p ON l.codProduct = p.codProduct
-            WHERE codLot = ?;
+            WHERE l.codLot = ?;
         `;
 
         const [response] = await conn.query<RowDataPacket[]>(sql, [codLot]);
@@ -85,7 +85,7 @@ export async function getLotByCodProduct(req: Request, res: Response) {
             SELECT l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate
             FROM lots AS l
             INNER JOIN products AS p ON l.codProduct = p.codProduct
-            WHERE codProduct = ?;
+            WHERE p.codProduct = ?;
         `;
 
         const [response] = await conn.query<RowDataPacket[]>(sql, [codProduct]);
@@ -96,6 +96,7 @@ export async function getLotByCodProduct(req: Request, res: Response) {
         });
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: "Erro ao buscar lotes."
@@ -190,6 +191,7 @@ export async function updateLots(req: Request, res: Response) {
     }
 }
 
+// Função usada para deletar lotes
 export async function deleteLots(req: Request, res: Response) {
     const { codLot } = req.params;
 
@@ -209,7 +211,7 @@ export async function deleteLots(req: Request, res: Response) {
             success: true,
             message: "Lote deletado com sucesso!"
         });
-        
+
     } catch (error) {
         return res.status(400).json({
             success: false,

@@ -19,9 +19,9 @@ create table if not exists products(
 
 create table if not exists lots(
     codLot char(8) primary key unique,
-    codProduct int not null,
+    codProduct char(5) not null,
     quantity int not null,
-    entryDate date not null default (curretnt_date),
+    entryDate date not null default (current_date),
     expirationDate date not null,
     foreign key (codProduct) references products(codProduct)
 );
@@ -35,11 +35,11 @@ create table if not exists sales(
 create table if not exists item_sale(
     idItem int auto_increment primary key,
     idSale int not null,
-    codProduct int not null,
+    codLot char(8) not null,
     quantity int not null,
     price decimal(10,2) not null,
     foreign key (idSale) references sales(idSale),
-    foreign key (codProduct) references products(codProduct)
+    foreign key (codLot) references lots(codLot)
 );
 
 create table if not exists users(

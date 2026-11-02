@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", getLots);
 router.get("/:codLot", getLotByCodLot);
-router.get("/product/:codProduct", getLotByCodProduct);
+router.get("/products/:codProduct", getLotByCodProduct);
 router.post("/", postLots);
 router.put("/:codLot", updateLots);
 router.delete("/:codLot", deleteLots);
