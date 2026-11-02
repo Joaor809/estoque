@@ -42,6 +42,11 @@ create table if not exists item_sale(
     foreign key (codLot) references lots(codLot)
 );
 
+create table if not exists roles(
+    idRole int auto_increment primary key,
+    name varchar(50) not null
+);
+
 create table if not exists users(
     idUser int auto_increment primary key,
     name varchar(150) not null,
@@ -49,7 +54,9 @@ create table if not exists users(
     cpf char(11) not null unique,
     email varchar(150) not null unique,
     telephone varchar(20) not null unique,
-    password varchar(150) not null
+    password varchar(150) not null,
+    idRole int not null,
+    foreign key (idRole) references roles(idRole)
 );
 
 INSERT INTO categorys (name) VALUES
@@ -73,3 +80,8 @@ INSERT INTO categorys (name) VALUES
 ('Congelados'),
 ('Utilidades Domésticas'),
 ('Outros');
+
+insert into roles(name) values
+("admin"),
+("seller"),
+("stock_clerk");
