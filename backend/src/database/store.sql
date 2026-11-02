@@ -21,6 +21,7 @@ create table if not exists lots(
     codLot char(8) primary key unique,
     codProduct int not null,
     quantity int not null,
+    entryDate date not null default 
     expirationDate date not null,
     foreign key (codProduct) references products(codProduct)
 );
