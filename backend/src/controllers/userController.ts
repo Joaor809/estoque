@@ -2,8 +2,7 @@ import type { Request, Response } from "express";
 import conn from "../config/db.js";
 import { hashData } from "../utils/hashData.js";
 import { generateUUID } from "../utils/generateUUID.js";
-
-const key = process.env.ENCRYPTION_KEY;
+import { key } from "../config/key.js";
 
 interface User {
     name: string,
