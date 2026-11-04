@@ -14,6 +14,7 @@ interface User {
     idRole: number
 }
 
+// Função usada para cadastrar novos usuários
 export async function postUser(req: Request, res: Response) {
     const { name, userName, cpf, email, telephone, password, idRole } = req.body as User;
 
@@ -51,6 +52,7 @@ export async function postUser(req: Request, res: Response) {
     }
 }
 
+// Função usada para pegar todos os usuários
 export async function getUsers(req: Request, res: Response) {
     try {
         const sql: string = `
@@ -81,6 +83,7 @@ export async function getUsers(req: Request, res: Response) {
     }
 }
 
+// Função usada para buscar usuários pelo CPF
 export async function getUserByCPF(req: Request, res: Response) {
     const { cpf } = req.params;
 
@@ -121,6 +124,7 @@ export async function getUserByCPF(req: Request, res: Response) {
     }
 }
 
+// Função usada para editar dados dos usuários
 export async function updateUser(req: Request, res: Response) {
     const { idUser } = req.params;
     const { name, userName, cpf, email, telephone } = req.body as User;
