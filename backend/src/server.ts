@@ -7,6 +7,7 @@ import Product from "./routes/Products.js";
 import Categorys from "./routes/Categorys.js";
 import Lots from "./routes/Lots.js";
 import Sale from "./routes/Sale.js";
+import Users from "./routes/Users.js";
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ server.use("/products", Product);
 server.use("/categorys", Categorys);
 server.use("/lots", Lots);
 server.use("/sales", Sale);
+server.use("/users", Users);
 
 const port: number = Number(process.env.PORT);
 

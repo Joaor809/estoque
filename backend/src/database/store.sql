@@ -48,12 +48,12 @@ create table if not exists roles(
 );
 
 create table if not exists users(
-    idUser int auto_increment primary key,
+    idUser char(36) primary key not null,
     name varchar(150) not null,
     username varchar(60) not null unique,
-    cpf char(11) not null unique,
-    email varchar(150) not null unique,
-    telephone varchar(20) not null unique,
+    cpf varbinary(255) not null unique,
+    email varbinary(255) not null unique,
+    telephone varbinary(255) not null unique,
     password varchar(150) not null,
     idRole int not null,
     foreign key (idRole) references roles(idRole)
