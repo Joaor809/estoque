@@ -1,0 +1,28 @@
+/* Card geral do carrinho */
+.card-cart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: "Roboto", system-ui;
+    background-color: aliceblue;
+    width: 20%;
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.1s ease-in-out;
+}
+
+.card-cart:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px -4px black;
+}
+
+/* Tamanho da imagem */
+.img-product img {
+    width: 90px;
+}
+
+/* Estilização das informações do produto na hora da venda */
+.info-product {
+
+}

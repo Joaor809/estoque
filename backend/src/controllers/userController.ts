@@ -63,7 +63,7 @@ export async function getUsers(req: Request, res: Response) {
                 CAST(AES_DECRYPT(u.cpf, ?) AS CHAR) AS cpf, 
                 CAST(AES_DECRYPT(u.email, ?) AS CHAR) AS email, 
                 CAST(AES_DECRYPT(u.telephone, ?) AS CHAR) AS telephone, 
-                r.name as role
+                r.name as role,
             FROM users AS u
             INNER JOIN roles AS r ON u.idRole = r.idRole;
         `;

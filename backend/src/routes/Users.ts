@@ -5,9 +5,9 @@ import { verifyRole } from "../auth/verifyRole.js";
 
 const router = Router()
 
-router.get("/", authMiddleware, verifyRole("admin"), getUsers);
-router.get("/:cpf", authMiddleware, verifyRole("admin"), getUserByCPF);
-router.post("/", authMiddleware, verifyRole("admin"), postUser);
-router.put("/:idUser", authMiddleware, verifyRole("admin"), updateUser);
+router.get("/", getUsers);
+router.get("/:cpf", getUserByCPF);
+router.post("/", postUser);
+router.put("/:idUser", updateUser);
 
 export default router;

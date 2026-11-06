@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "tsx": "^4.23.15"
-  },
-  "dependencies": {
-    "bcrypt": "^6.0.0"
-  }
-}
