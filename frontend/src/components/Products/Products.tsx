@@ -1,3 +1,4 @@
+import api from "../../services/api";
 import "./Products.css";
 import { useEffect, useState } from "react";
 
@@ -7,6 +8,7 @@ type Product = {
     mark: string;
     price: number;
     category: string;
+    image: string;
 };
 
 async function getProducts() {
@@ -22,7 +24,7 @@ async function getProducts() {
     return await response.json();
 }
 
-function TableProducts() {
+function Products() {
     const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
@@ -49,11 +51,11 @@ function TableProducts() {
                 products.map((product, index) => (
                     <div className="card-product" key={index}>
                         <div className="card-img">
-                            <img src={product.image} alt={product.name} />
+                            <img src={`${api}${product.image}`} alt={product.name} />
                         </div>
                         <div className="card-info">
                             <h2>{product.name}</h2>
-                            <p>Cod: {product.codProduct}</p>
+                            <p>Cod: <strong>{product.codProduct}</strong></p>
                             <p>Marca: {product.mark}</p>
                             <p>Preço: R$ {product.price.replace(".", ",")}</p>
                         </div>
@@ -67,4 +69,4 @@ function TableProducts() {
     );
 }
 
-export default TableProducts;
+export default Products;

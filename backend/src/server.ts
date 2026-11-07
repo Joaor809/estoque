@@ -9,10 +9,13 @@ import Lots from "./routes/Lots.js";
 import Sale from "./routes/Sale.js";
 import Users from "./routes/Users.js";
 import Auth from "./auth/authController.js"
+import path from "node:path";
+
 
 dotenv.config()
 
 const server = express();
+server.use("/upload", express.static(path.resolve("upload")));
 
 server.use(express.json());
 server.use(cors());

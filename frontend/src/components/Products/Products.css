@@ -20,11 +20,13 @@
 
 .card-product{
     display: flex;
+    align-items: center;
     background-color: var(--bg-card);
     box-shadow: 0 2px 3px -2px gray;
     width: 18rem;
     border-radius: 8px;
     transition: all .1s ease-in-out;
+    gap: 14px;
 }
 
 .card-product:hover {
@@ -34,4 +36,47 @@
 
 .card-img img{
     width: 100px;
+}
+
+@media(max-width: 480px) {
+    .products-container {
+        width:fit-content;
+    }
+
+    .products-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 768px) {
+    .products-container {
+        width: fit-content;
+    }
+    .products-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+    }
+}
+
+@media(max-width: 1399px){
+    .products-container {
+        width: fit-content;
+    }
+    .products-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 1400px) {
+    .products-container {
+        width: fit-content;
+    }
+    .products-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
