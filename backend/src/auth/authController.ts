@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import type { RowDataPacket } from "mysql2";
 
 // Função que faz o login do usuário
-export async function login(req: Request, res: Response) {
+export default async function login(req: Request, res: Response) {
     const { userName, password } = req.body;
 
     try {

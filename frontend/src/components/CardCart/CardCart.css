@@ -5,7 +5,7 @@
     align-items: center;
     gap: 10px;
     font-family: "Roboto", system-ui;
-    background-color: aliceblue;
+    background-color: var(--bg-card);
     width: 20%;
     padding: 12px;
     border-radius: 12px;

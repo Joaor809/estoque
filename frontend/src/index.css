@@ -5,3 +5,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --font: "Roboto", system-ui;
+  --bg-color: #ddd;
+  --bg-card: aliceblue;
+}

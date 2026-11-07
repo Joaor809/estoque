@@ -5,6 +5,7 @@ input {
     outline: none;
     border: 1px solid gray;
     transition: all .3s ease;
+    border-radius: 6px;
 }
 
 input:focus{

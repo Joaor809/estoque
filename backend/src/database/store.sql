@@ -13,6 +13,7 @@ create table if not exists products(
     name varchar(100) not null,
     mark varchar(50) not null,
     price decimal(10,2) not null,
+    image varchar(250) not null,
     idCategory int not null,
     foreign key (idCategory) references categorys (idCategory)
 );

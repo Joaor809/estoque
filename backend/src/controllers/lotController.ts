@@ -16,7 +16,7 @@ interface Lot {
 export async function getLots(req: Request, res: Response) {
     try {
         const sql: string = `
-            SELECT l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate
+            SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate
             FROM lots AS l
             INNER JOIN products AS p ON l.codProduct = p.codProduct;
         `;
