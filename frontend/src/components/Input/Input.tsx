@@ -2,12 +2,14 @@ import "./Input.css"
 
 type inputProps = {
     type: string;
-    placeholder?: string
+    placeholder?: string;
+    value: string;
+    onChange: (value: string) => void;
 }
 
-function Input({ type, placeholder }: inputProps){
+function Input({ type, placeholder, value, onChange }: inputProps){
     return (
-        <input type={type} placeholder={placeholder}/>
+        <input type={type} placeholder={placeholder} value={value} onChange={(event) => onChange(event.target.value)}/>
     )
 }
 

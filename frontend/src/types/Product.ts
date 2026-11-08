@@ -9,5 +9,6 @@ export type Product = {
 
 export type ProductsResponse = {
     success: boolean;
+    message: string;
     data: Product[];
 };

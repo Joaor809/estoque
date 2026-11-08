@@ -10,7 +10,7 @@ function Products() {
     useEffect(() => {
         async function loadProducts() {
             try {
-                const response = await getProducts("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDEzOTIzMiwiZXhwIjoxNzk0MjI1NjMyfQ.NzFZwl4HPFCOaCgbrYJVyyPpKNIgpV9RXIZx9ewrWLo");
+                const response = await getProducts("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDE2NDYxMCwiZXhwIjoxNzk0MjUxMDEwfQ.D1gzqOiq_GDLTvHrA5h40PdNcMxdtCeCP3uHDhLqpQw");
 
                 console.log(response);
 
@@ -30,8 +30,8 @@ function Products() {
             <div className="products-content">
 
             {products.length > 0 ? (
-                products.map((product, index) => (
-                    <div className="card-product" key={index}>
+                products.map((product) => (
+                    <div className="card-product" key={product.codProduct}>
                         <div className="card-img">
                             <img src={`${api}${product.image}`} alt={product.name} />
                         </div>
@@ -47,7 +47,9 @@ function Products() {
                     </div>
                 ))
             ) : (
-                <h1>Por favor, faça login.</h1>
+                <div className="error">
+                    <h1>Erro ao buscar produtos</h1>
+                </div>
             )}
             </div>
         </div>
