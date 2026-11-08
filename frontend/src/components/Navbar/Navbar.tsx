@@ -7,14 +7,13 @@ interface button {
 
 type NavbarProps = {
     btn: button[],
-    srcLogo: string;
 }
 
-function Navbar({ btn, srcLogo }: NavbarProps) {
+function Navbar({ btn }: NavbarProps) {
     return (
         <nav className="navbar">
             <a href="/">
-                <img className="logo" src={srcLogo} alt="Logo" />
+                <img className="logo" src="./../../../public/logo.png" alt="Logo" />
             </a>
 
             <div className="nav-links">
@@ -23,6 +22,7 @@ function Navbar({ btn, srcLogo }: NavbarProps) {
                         {item.name}
                     </a>
                 ))}
+                <a className="btn-link">Sair</a>
             </div>
         </nav>
     )

@@ -1,0 +1,55 @@
+.sell-container {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sell-content {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+}
+.products {
+    margin: 1rem;
+    height: 100vh;
+}
+.products .products-container {
+    height: 80vh;
+}
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    height: 75%;
+    padding: 10px;
+}
+
+.total{
+    margin-top: auto;
+}
+
+.btn-sell {
+    display: flex;
+    justify-content: center;
+}
+
+.input-code{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid black;
+}
+.input-code .btn {
+    height: 20px;
+}
+
+
+.total p{
+    font-family: var(--font);
+    font-size: 22px;
+    margin: 12px;
+}
+
+.btn-sell button {
+    width: 100%;
+}

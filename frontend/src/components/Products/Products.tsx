@@ -1,28 +1,8 @@
 import api from "../../services/api";
 import "./Products.css";
 import { useEffect, useState } from "react";
-
-type Product = {
-    codProduct: string;
-    name: string;
-    mark: string;
-    price: number;
-    category: string;
-    image: string;
-};
-
-async function getProducts() {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDA1MDU0OCwiZXhwIjoxNzk0MTM2OTQ4fQ.x48dlWx1sCk-2pS6D0JI2TjRNcBpHvd_b7-aTFzeRUw";
-
-    const response = await fetch("http://localhost:3000/products", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json"
-        }
-    });
-
-    return await response.json();
-}
+import type { Product } from "../../types/Product";
+import getProducts from "../../services/getProducts";
 
 function Products() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -30,11 +10,13 @@ function Products() {
     useEffect(() => {
         async function loadProducts() {
             try {
-                const response = await getProducts();
+                const response = await getProducts("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDEzOTIzMiwiZXhwIjoxNzk0MjI1NjMyfQ.NzFZwl4HPFCOaCgbrYJVyyPpKNIgpV9RXIZx9ewrWLo");
 
                 console.log(response);
 
-                setProducts(response.data);
+                if (response.success) {
+                    setProducts(response.data);
+                }
             } catch (error) {
                 console.error("Erro ao carregar produtos:", error);
             }
@@ -57,7 +39,10 @@ function Products() {
                             <h2>{product.name}</h2>
                             <p>Cod: <strong>{product.codProduct}</strong></p>
                             <p>Marca: {product.mark}</p>
-                            <p>Preço: R$ {product.price.replace(".", ",")}</p>
+                            <p>Preço: {product.price.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL"
+                            })}</p>
                         </div>
                     </div>
                 ))

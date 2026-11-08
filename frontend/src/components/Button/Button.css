@@ -1,4 +1,4 @@
-button {
+.btn {
     width: auto;
     min-height: 40px;
     height: auto;
@@ -14,7 +14,7 @@ button {
     transition: all .1s ease;
 }
 
-button:hover {
+.btn:hover {
     transform: translateY(-2px);
     background-color: rgb(244, 244, 244);
     color: #6dabfb;
