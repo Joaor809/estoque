@@ -10,6 +10,7 @@ import Modal from "../../../components/Modal/Modal";
 import type { CartItem } from "../../../types/Cart";
 import CardCart from "../../../components/CardCart/CardCart";
 import api from "../../../services/api";
+import Swal from "sweetalert2";
 
 function Sell() {
 
@@ -32,6 +33,12 @@ function Sell() {
     ]
 
     function addToCart(codProduct: string) {
+
+        if (!codProduct || !quantity) {
+            alert("Preencha todos os campos!");
+            return;
+        }
+
         const product = products.find(
             product => product.codProduct == codProduct
         )
@@ -58,7 +65,35 @@ function Sell() {
         setCodProduct("");
         setQuantity("")
 
-        setTotalValue(prev => prev += product.price * Number(quantity))
+        setTotalValue(prev => prev + product.price * Number(quantity))
+    }
+
+    function removeItemFromCart(codProduct: string) {
+
+        Swal.fire({
+            title: "Deletar produto do carrinho",
+            text: "Você deseja mesmo remover o produto do carrinho",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, remover!",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const item = cart.find(item => item.codProduct === codProduct);
+
+                if (!item) return;
+
+                setCart(prev => prev.filter(item => item.codProduct !== codProduct));
+
+                setTotalValue(prev => prev - item.value);
+
+                Swal.fire("Produto removido!");
+            } else if (result.isDismissed) {
+                Swal.fire("Operação cancelada!");
+            }
+        })
+
+
     }
 
     useEffect(() => {
@@ -96,24 +131,32 @@ function Sell() {
                 </section>
                 <section className="cart">
                     <div className="cart-products">
-                        {cart.map((item) => (
-                            <CardCart imgProduct={api + item.imageLink} nameProduct={item.name} quantity={item.quantity} value={item.value} mark={item.mark}/>
-                        ))}
+                        <div className="cart-container">
+                            {cart.map((item) => (
+                                <CardCart key={item.codProduct} codProduct={item.codProduct} imgProduct={api + item.imageLink} nameProduct={item.name} quantity={item.quantity} value={item.value} mark={item.mark} onRemove={removeItemFromCart} />
+                            ))}
+                        </div>
                     </div>
                     <div className="total">
-                        <section className="input-code">
-                            <div className="inputs">
-                                <Input type="string" placeholder="código" value={codProduct} onChange={setCodProduct}/>
-                                <Input type="number" placeholder="quantidade" value={quantity} onChange={setQuantity}/>
-                            </div>
-                            <Button nameButton="Adicionar" typeButton="button" onClick={() => addToCart(codProduct)}/>
-                        </section>
-                        <p>Total: {totalValue.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        })}</p>
+                        <form onSubmit={(event) => {
+                            event.preventDefault();
+                            addToCart(codProduct)
+                        }}>
+                            <section className="input-code">
+
+                                <div className="inputs">
+                                    <Input type="string" placeholder="código" value={codProduct} onChange={setCodProduct} />
+                                    <Input type="number" placeholder="quantidade" value={quantity} onChange={setQuantity} />
+                                </div>
+                                <Button nameButton="Adicionar" typeButton="submit" />
+                            </section>
+                            <p>Total: {totalValue.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL"
+                            })}</p>
+                        </form>
                         <div className="btn-sell">
-                            <Button nameButton="Vender" typeButton="button"/>
+                            <Button nameButton="Vender" typeButton="button" />
                         </div>
                     </div>
                 </section>

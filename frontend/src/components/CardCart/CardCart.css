@@ -30,3 +30,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.btn-remove button {
+    margin-top: 4px;
+    width: 100%;
+}

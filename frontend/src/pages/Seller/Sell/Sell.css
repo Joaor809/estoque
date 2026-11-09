@@ -5,33 +5,50 @@
 
 .sell-content {
     display: grid;
-    grid-template-columns: 6fr 4fr;
+    grid-template-columns: auto 20%;
+    width: 100%;
 }
 .products {
     margin: 1rem;
     height: 100vh;
 }
 .products .products-container {
-    height: 80vh;
+    width: 100%;
+    height: 75vh;
 }
 
+/* Estilização dos itens no carrinho de compras */
 .cart {
     display: flex;
     flex-direction: column;
+    width: 100%;
     height: 75%;
     padding: 10px;
+    margin: 0;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
+/* estilização do carrinho de compras */
+.cart-products {
+    height: 47vh;
+    margin-bottom: 10px;
+    overflow: auto;
+    box-shadow: inset 0 2px 2px 2px gray;
+    border-radius: 8px;
+    padding: 10px;
+}
+/* estilização do valor total */
 .total{
     margin-top: auto;
 }
-
-.btn-sell {
-    display: flex;
-    justify-content: center;
+.total p{
+    font-family: var(--font);
+    font-size: 22px;
+    margin: 12px;
 }
-
-.input-code{
+/* estilização dos inputs */
+.input-code {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -46,24 +63,184 @@
 .inputs {
     display: flex;
     flex-direction: column;
-}
-.inputs Input {
-    margin-top: 6px;
+    gap: 10px;
 }
 
-.total p{
-    font-family: var(--font);
-    font-size: 22px;
-    margin: 12px;
-}
 
+
+/* estilização do botão de venda */
+.btn-sell {
+    display: flex;
+    justify-content: center;
+}
 .btn-sell button {
     width: 100%;
 }
 
-.cart-products {
-    height: auto;
-    margin-bottom: 10px;
-    padding: 0;
-    overflow: auto;
+@media (max-width: 480px) {
+    .sell-container {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .sell-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .products {
+        height: auto;
+    }
+
+    .products .products-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .products .products-container {
+        width: 100%;
+        height: 50vh;
+    }
+
+    .products .card-product {
+        width: 80%;
+    }
+
+    .products .card-product img {
+        width: 120px;
+    }
+
+    .cart {
+        display: flex;
+        flex-direction: column;
+        height: 45vh;
+        min-height: 300px;
+    }
+
+    .cart-products {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .cart-products .card-cart img{
+        width: 110px;
+    }
+
+    .total {
+        margin-top: auto;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .sell-container {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .sell-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Produtos */
+    .products {
+        height: auto;
+        margin: 1rem;
+    }
+
+    .products .products-container {
+        width: 100%;
+        height: 50vh;
+        overflow-y: auto;
+    }
+
+    .products .products-content {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .products .card-product {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .products .card-product img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .cart-products {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .cart-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+    .cart {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        height: auto;
+        min-height: 300px;
+        margin: 0 1rem 1rem;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .card-cart {
+        width: 80%;
+    }
+
+    .cart-products {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .inputs {
+        gap: 10px;
+    }
+
+    /* Total e botão */
+    .total {
+        margin-top: auto;
+        flex-shrink: 0;
+    }
+
+    .btn-sell button {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .sell-content {
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+
+    .products .products-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cart {
+        width: 90%;
+        margin: 0 auto;
+    }
 }

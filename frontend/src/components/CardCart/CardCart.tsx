@@ -1,14 +1,20 @@
+import Button from "../Button/Button";
 import "./CardCart.css";
 
 type CardCatProps = {
-    imgProduct: string;
+    codProduct: string;
     nameProduct: string;
     quantity: number;
     value: number;
     mark: string;
+    imgProduct: string;
+    onRemove: (codProduct: string) => void;
 }
 
-function CardCart({ imgProduct, nameProduct, quantity, value, mark }: CardCatProps){
+function CardCart({ codProduct, nameProduct, mark, value, quantity, imgProduct, onRemove }: CardCatProps){
+
+    
+
     return (
         <div className="card-cart">
             <div className="img-product">
@@ -21,6 +27,9 @@ function CardCart({ imgProduct, nameProduct, quantity, value, mark }: CardCatPro
                     style: "currency",
                     currency: "BRL"
                 })}</span>
+                <div className="btn-remove">
+                    <Button nameButton="Remover" onClick={() => onRemove(codProduct)}/>
+                </div>
             </div>
         </div>
     )
