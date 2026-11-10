@@ -6,11 +6,10 @@ import { verifyRole } from "../auth/verifyRole.js";
 
 const router = Router();
 
-router.get("/", authMiddleware, getLots);
-router.get("/:codLot", authMiddleware, getLotByCodLot);
-router.get("/products/:codProduct", authMiddleware, getLotByCodProduct);
-router.post("/", authMiddleware, verifyRole("admin", "stock_clerk"), postLots);
-router.put("/:codLot", authMiddleware, verifyRole("admin", "stock_clerk"), updateLots);
-router.delete("/:codLot", authMiddleware, verifyRole("admin", "stock_clerk"), deleteLots);
-
+router.get("/", authMiddleware, verifyRole(1, 3), getLots);
+router.get("/:codLot", authMiddleware, verifyRole(1, 3), getLotByCodLot);
+router.get("/products/:codProduct", authMiddleware, verifyRole(1, 3), getLotByCodProduct);
+router.post("/", authMiddleware, verifyRole(1, 3), postLots);
+router.put("/:codLot", authMiddleware, verifyRole(1, 3), updateLots);
+router.delete("/:codLot", authMiddleware, verifyRole(1, 3), deleteLots);
 export default router;

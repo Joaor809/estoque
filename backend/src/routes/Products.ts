@@ -11,7 +11,7 @@ router.post("/", authMiddleware, upload.single("image"), postProducts);
 router.get("/", authMiddleware, getProducts);
 router.get("/search", authMiddleware, searchProducts);
 router.get("/category/:idCategory", authMiddleware, getProductsByCategory);
-router.delete("/:codProduct", authMiddleware, verifyRole("admin", "stock_clerk"), deleteProducts);
-router.put("/:codProduct", authMiddleware, verifyRole("admin", "stock_clerk"), updateProducts)
+router.delete("/:codProduct", authMiddleware, verifyRole(1, 3), deleteProducts);
+router.put("/:codProduct", authMiddleware, verifyRole(1, 3), updateProducts)
 
 export default router;

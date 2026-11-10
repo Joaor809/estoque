@@ -1,57 +1,105 @@
 import type { Request, Response } from "express";
 import conn from "../config/db.js";
-import type { RowDataPacket, ResultSetHeader } from "mysql2";
+import type { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 
-// Função para poder realizar a venda
-export async function shopping(req: Request, res: Response) {
-    const { products, totalValue } = req.body;
-
-    const connection = await conn.getConnection(); // getConnection() solicita uma conexão individual
-
-    try {
-
-        await connection.beginTransaction() // beginTransaction() inicia uma transação no banco de dados.
-
-        const [sale] = await conn.query<ResultSetHeader>("INSERT INTO sales(totalValue) VALUES (?)", [totalValue]);
-
-        const idSale: number = sale.insertId;
-
-        for (const product of products) {
-            await connection.query("INSERT INTO item_sale(idSale, codLot, quantity, price) VALUES (?, ?, ?, ?)", [idSale, product.codLot, product.quantity, product.price]);
-
-            const [response] = await connection.query<ResultSetHeader>("UPDATE lots SET quantity = quantity - ? WHERE codLot = ? AND quantity >= ?", [product.quantity, product.codLot, product.quantity]);
-
-            if (response.affectedRows === 0) {
-                await connection.rollback(); // rollback() desfaz todas as alterações realizadas na transação desde o último beginTransaction()
-                
-                return res.status(400).json({
-                    success: false,
-                    message: "Lote inexistente ou quantidade insuficiente."
-                });
-            }
-
-        }
-
-        await connection.commit(); // commit() se tudo funcionar, confirma as alterações.
-
-        return res.status(201).json({
-            success: true,
-            message: "Venda realizada com sucesso!"
-        });
-    } catch (error) {
-        await connection.rollback();
-
-        return res.status(500).json({
-            success: false,
-            message: "Erro ao realizar venda."
-        });
-    } finally {
-        connection.release();
-    }
+interface Lot extends RowDataPacket {
+    codLot: string;
+    quantity: number;
+    expirationDate: Date;
+    available: Boolean;
 }
 
+// Função para poder realizar a venda
+
+
+interface Lot extends RowDataPacket {
+    codLot: string;
+    quantity: number;
+    expirationDate: Date;
+}
+
+export async function shopping(req: Request, res: Response) {
+    const { products, totalValue } = req.body;
+    console.log(products)
+
+    const connection = await conn.getConnection();
+
+    try {
+        
+        (await connection).beginTransaction()
+        const [result] = await connection.query<ResultSetHeader>("INSERT INTO sales (totalValue) VALUES (?);", totalValue)
+        const idSale = result.insertId;
+
+        for (const product of products) {
+            const sql = `
+            SELECT p.name as product, l.codLot, l.quantity, l.expirationDate
+            FROM lots as l
+            INNER JOIN products AS p ON p.codProduct = l.codProduct
+            WHERE l.codProduct = ?
+	            AND l.quantity > 0
+	            AND l.expirationDate >= CURDATE()
+	            AND l.available = 1
+            ORDER BY l.expirationDate ASC;
+        `
+            const [lots] = await connection.query<Lot[]>(sql, [product.codProduct])
+
+            if (lots.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Nenhum lote disponível para o produto: ${product.codProduct}`
+                })
+            }
+
+            let remaining = product.quantity;
+            
+            
+            
+            for (const lot of lots) {
+                if (remaining <= 0) {
+                    break;
+                }
+                const sqlItemSale = "INSERT INTO item_sale(idSale, codLot, quantity, price) VALUES (?, ?, ?, ?)";
+                
+                const quantity = Math.min(remaining, lot.quantity);
+                
+                await connection.query(sqlItemSale, [idSale, lot.codLot, quantity, product.price])
+                await connection.query("UPDATE lots SET quantity = quantity - ? WHERE codLot = ?", [quantity, lot.codLot])
+
+                remaining -= quantity;
+            }
+            
+            (await connection).commit()
+
+            if (remaining > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Estoque insuficiente para o produto: ${product.codProduct}`
+                })
+            }
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Venda realizada com sucesso"
+        });
+        
+    } catch (error) {
+        (await connection).rollback()
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao realizar venda"
+        });
+    } finally {
+        (await connection).release()
+    }
+
+}
+
+
+
 // Função para pegar todas as vendas que foram realizadas
-export async function getSales(req: Request, res: Response){
+export async function getSales(req: Request, res: Response) {
     try {
         const sql: string = `
             SELECT * FROM sales;

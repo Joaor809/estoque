@@ -80,6 +80,7 @@ export async function getUsers(req: Request, res: Response) {
             success: false,
             message: "Erro ao buscar usuários"
         });
+        console.log(error)
     }
 }
 

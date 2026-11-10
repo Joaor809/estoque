@@ -147,6 +147,7 @@ export async function postLots(req: Request, res: Response) {
         });
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: "Erro ao cadastrar produto."
@@ -218,4 +219,11 @@ export async function deleteLots(req: Request, res: Response) {
             message: "Erro ao deletar lote."
         });
     }
+}
+
+export async function alterStatus(req: Request, res: Response) {
+    const { codProduct } = req.params;
+    const { type } = req.body;
+
+    
 }

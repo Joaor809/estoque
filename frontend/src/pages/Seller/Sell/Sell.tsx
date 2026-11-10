@@ -24,7 +24,11 @@ function Sell() {
     const [modalMessage, setModalMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
 
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+        return window.location.href = "/";
+    }
 
     const buttons = [
         { name: "Produtos", link: "/products" },
@@ -57,6 +61,7 @@ function Sell() {
             name: product.name,
             mark: product.mark,
             value: product.price * Number(quantity),
+            price: product.price,
             quantity: Number(quantity),
             imageLink: product.image
         }
@@ -96,10 +101,46 @@ function Sell() {
 
     }
 
+    async function shopping(): Promise<void> {
+
+        if (cart.length === 0) {
+            Swal.fire("Carrinho vazio", "Adicione produtos antes de vender.", "warning")
+        }
+
+        try {
+            const response = await fetch(`${api}/sales`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    products: cart,
+                    totalValue
+                })
+            });
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                Swal.fire("Erro!", data.message, "warning");
+                return;
+            }
+
+            Swal.fire("Sucesso", data.message, "success");
+
+            setCart([]);
+            setTotalValue(0);
+        } catch (error) {
+            console.log(error)
+            Swal.fire("Erro", "Erro ao realizar venda", "error");
+        }
+    }
+
     useEffect(() => {
         async function loadProducts() {
             try {
-                const response = await getProducts("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDE2NDYxMCwiZXhwIjoxNzk0MjUxMDEwfQ.D1gzqOiq_GDLTvHrA5h40PdNcMxdtCeCP3uHDhLqpQw");
+                const response = await getProducts(token)
 
                 if (!response.success) {
                     setModalTitle("Erro");
@@ -156,7 +197,7 @@ function Sell() {
                             })}</p>
                         </form>
                         <div className="btn-sell">
-                            <Button nameButton="Vender" typeButton="button" />
+                            <Button nameButton="Vender" typeButton="button" onClick={shopping} />
                         </div>
                     </div>
                 </section>

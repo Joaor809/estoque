@@ -5,9 +5,9 @@ import { verifyRole } from "../auth/verifyRole.js";
 
 const router = Router();
 
-router.get("/", authMiddleware, verifyRole("admin", "stock_clerk"), getCategorys);
-router.post("/", authMiddleware, verifyRole("admin", "stock_clerk"), postCategorys);
-router.put("/:idCategory", authMiddleware, verifyRole("admin", "stock_clerk"), updateCategorys);
-router.delete("/:idCategory", authMiddleware, verifyRole("admin", "stock_clerk"), deleteCategorys);
+router.get("/", authMiddleware, verifyRole(1, 3), getCategorys);
+router.post("/", authMiddleware, verifyRole(1, 3), postCategorys);
+router.put("/:idCategory", authMiddleware, verifyRole(1, 3), updateCategorys);
+router.delete("/:idCategory", authMiddleware, verifyRole(1, 3), deleteCategorys);
 
 export default router;
