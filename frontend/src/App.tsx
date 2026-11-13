@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Seller from "./pages/Seller/Seller"
 import Sales from "./pages/Seller/Sales/Sales";
 import Sell from "./pages/Seller/Sell/Sell";
+import Products from "./pages/PagesPublics/Products/Products.tsx";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Route path="/seller" element={<Seller/>} />
         <Route path="/seller/sell/" element={<Sell/>} />
         <Route path="/seller/sales/" element={<Sales/>} />
+        <Route path="/products" element={<Products/>} />
       </Routes>
     </BrowserRouter>
   )

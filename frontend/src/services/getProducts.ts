@@ -8,7 +8,7 @@ export default async function getProducts(): Promise<ProductsResponse> {
         throw new Error("Token não fornecido!");
     }
 
-    const response = await fetch(`${api}/products`, {
+    const response = await fetch(`${api}/products/availableProducts`, {
         headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json"

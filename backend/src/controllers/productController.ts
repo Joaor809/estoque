@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import conn from "../config/db.js";
 import { generateCode } from "../utils/generateCode.js";
+import { getIO } from "../config/socket.js";
 
 // interface para Produtos
 interface Products {
@@ -46,6 +47,8 @@ export async function postProducts(req: Request, res: Response){
             `;
     
             await conn.query(sql, [codProduct, nameProduct, mark, price, idCategory, image]);
+
+            getIO().emit("products:update");
     
             return res.status(201).json({
                 success: true,
@@ -69,6 +72,8 @@ export async function getProducts(req: Request, res: Response) {
             INNER JOIN categorys AS c ON c.idCategory = p.idCategory;
         `;
         const [products] = await conn.query<RowDataPacket[]>(sql);
+
+        getIO().emit("products:update");
         
         return res.status(200).json({
             success: true,
@@ -79,6 +84,38 @@ export async function getProducts(req: Request, res: Response) {
         return res.status(500).json({
             success: false,
             message: "Erro ao buscar produtos!"
+        });
+    }
+}
+
+// Função usada para pegar apenas produtos com quantidade maior que 0; produtos dentro do prazo de validade; produtos disponibilizados pelo repositor
+export async function getAvailableProducts(req: Request, res: Response) {
+    try {
+        const sql: string = `
+            SELECT p.codProduct, p.name, p.mark, p.price, c.name AS "category", p.image, l.quantity
+            FROM products AS p
+            INNER JOIN categorys AS c ON c.idCategory = p.idcategory
+            INNER JOIN lots AS l ON l.codProduct = p.codProduct
+            WHERE l.codProduct = p.codProduct
+                AND l.quantity > 0
+                AND l.expirationDate >= CURDATE()
+                AND l.available = 1;
+        `;
+
+        const [response] = await conn.query(sql);
+
+        getIO().emit("products:update");
+
+        return res.status(200).json({
+            success: true,
+            data: response
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar lotes.",
         });
     }
 }
@@ -207,6 +244,8 @@ export async function updateProducts(req: Request, res: Response){
             });
         }
 
+        getIO().emit("products:update");
+
         return res.status(200).json({
             success: true,
             message: "Produto atualizado com sucesso!"
@@ -242,6 +281,8 @@ export async function deleteProducts(req: Request, res: Response){
                     message: "Produto não encontrado para ser deletado."
                 });
             }
+
+            getIO().emit("products:update");
             
             return res.status(200).json({
                 success: true,

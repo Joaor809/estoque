@@ -11,6 +11,7 @@ import type { CartItem } from "../../../types/Cart";
 import CardCart from "../../../components/CardCart/CardCart";
 import api from "../../../services/api";
 import Swal from "sweetalert2";
+import { buttonsSeller } from "../../../config/NavbarItems";
 
 function Sell() {
 
@@ -30,17 +31,12 @@ function Sell() {
         return window.location.href = "/";
     }
 
-    const buttons = [
-        { name: "Produtos", link: "/products" },
-        { name: "Vender", link: "/seller/sell" },
-        { name: "Vendas", link: "/seller/sales" }
-    ]
-
-    function addToCart(codProduct: string) {
+    function addToCart(codProduct: string, quantity: number) {
 
         if (!codProduct || !quantity) {
-            alert("Preencha todos os campos!");
-            return;
+            return Swal.fire({
+                title: "Preencha todos os campos!"
+            });
         }
 
         const product = products.find(
@@ -48,12 +44,14 @@ function Sell() {
         )
 
         if (!product) {
-            alert("Produto não encontrado!");
-            return;
+            return Swal.fire({
+                title: "Produto não encontrado ou em falta!"
+            });
         }
         if (Number(quantity) <= 0) {
-            alert("Quantidade inválida!");
-            return;
+            return Swal.fire({
+                title: "Quantidade inválida!"
+            });
         }
 
         const itemCart = {
@@ -164,7 +162,7 @@ function Sell() {
 
     return (
         <div className="sell-container">
-            <Navbar btn={buttons} />
+            <Navbar btn={buttonsSeller} />
 
             <div className="sell-content">
                 <section className="products">
@@ -181,7 +179,7 @@ function Sell() {
                     <div className="total">
                         <form onSubmit={(event) => {
                             event.preventDefault();
-                            addToCart(codProduct)
+                            addToCart(codProduct, Number(quantity))
                         }}>
                             <section className="input-code">
 

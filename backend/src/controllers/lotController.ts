@@ -3,6 +3,7 @@ import conn from "../config/db.js";
 import { generateCode } from "../utils/generateCode.js";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import type { Interface } from "readline";
+import { getIO } from "../config/socket.js";
 
 interface Lot {
     codLot: string,
@@ -21,7 +22,10 @@ export async function getLots(req: Request, res: Response) {
             INNER JOIN products AS p ON l.codProduct = p.codProduct;
         `;
 
+        
         const [response] = await conn.query(sql);
+        
+        getIO().emit("stock:update");
 
         return res.status(200).json({
             success: true,
@@ -141,6 +145,8 @@ export async function postLots(req: Request, res: Response) {
 
         await conn.query(sql, [codLot, codProduct, quantity, expirationDate]);
 
+        getIO().emit("stock:update");
+
         return res.status(201).json({
             success: true,
             message: "Lote cadastrado com sucesso!"
@@ -174,6 +180,9 @@ export async function updateLots(req: Request, res: Response) {
         const [response] = await conn.query<ResultSetHeader>(sql, [codProduct, quantity, entryDate, expirationDate, codLot]);
 
         if (response.affectedRows > 0) {
+
+            getIO().emit("stock:update");
+
             return res.status(200).json({
                 success: true,
                 message: "Produto atualizado com sucesso!"
@@ -208,6 +217,8 @@ export async function deleteLots(req: Request, res: Response) {
 
         await conn.query(sql, [codLot]);
 
+        getIO().emit("stock:update");
+
         return res.status(400).json({
             success: true,
             message: "Lote deletado com sucesso!"
@@ -219,11 +230,4 @@ export async function deleteLots(req: Request, res: Response) {
             message: "Erro ao deletar lote."
         });
     }
-}
-
-export async function alterStatus(req: Request, res: Response) {
-    const { codProduct } = req.params;
-    const { type } = req.body;
-
-    
 }

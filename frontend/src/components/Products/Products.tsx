@@ -6,11 +6,16 @@
 
     function Products() {
         const [products, setProducts] = useState<Product[]>([]);
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            return window.location.href = "/login";
+        }
 
         useEffect(() => {
             async function loadProducts() {
                 try {
-                    const response = await getProducts("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI4NDkxNDc3Ny05NWRhLTRjZjgtOTQ0My1mNGI0YzU2OGJiZDMiLCJpZFJvbGUiOjEsImlhdCI6MTc5NDMyMTU3MSwiZXhwIjoxNzk0NDA3OTcxfQ.pheXpBq1rkEYiodcrUufJnKfbDJsPAWSTUmOb4hDfcE");
+                    const response = await getProducts();
 
                     console.log(response);
 
@@ -23,7 +28,7 @@
             }
 
             loadProducts();
-        }, []);
+        }, [token]);
 
         return (
             <div className="products-container">
@@ -43,6 +48,7 @@
                                     style: "currency",
                                     currency: "BRL"
                                 })}</p>
+                                <p>Quantidade: {product.quantity}</p>
                             </div>
                         </div>
                     ))

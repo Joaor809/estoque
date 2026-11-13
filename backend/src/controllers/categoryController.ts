@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import conn from "../config/db.js";
+import { getIO } from "../config/socket.js";
 
 // Função que lista todas as categorias cadastradas
 export async function getCategorys(req: Request, res: Response) {
@@ -8,6 +9,8 @@ export async function getCategorys(req: Request, res: Response) {
         const sql: string = "SELECT * FROM categorys;";
 
         const [response] = await conn.query<RowDataPacket[]>(sql);
+
+        getIO().emit("categorys:update");
 
         return res.status(200).json({
             success: true,
@@ -38,6 +41,8 @@ export async function postCategorys(req: Request, res: Response) {
 
         await conn.query(sql, [nameCategory]);
 
+        getIO().emit("categorys:update");
+
         return res.status(201).json({
             success: true,
             message: "Categoria cadastrada com sucesso!"
@@ -67,10 +72,14 @@ export async function deleteCategorys(req: Request, res: Response) {
         const [response] = await conn.query<ResultSetHeader>(sql, [idCategory]);
 
         if (response.affectedRows > 0) {
+
+            getIO().emit("categorys:update");
+
             return res.status(200).json({
                 success: true,
                 message: "Categoria deletada com sucesso!"
             });
+
         } else {
             return res.status(404).json({
                 success: false,
@@ -114,6 +123,9 @@ export async function updateCategorys(req: Request, res: Response){
                 message: "Categoria não encontrada."
             })
         }
+
+        getIO().emit("categorys:update");
+
         return res.status(200).json({
             success: true,
             message: "Categoria atualizada com sucesso!"

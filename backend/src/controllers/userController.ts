@@ -3,6 +3,8 @@ import conn from "../config/db.js";
 import { hashData } from "../utils/hashData.js";
 import { generateUUID } from "../utils/generateUUID.js";
 import { key } from "../config/key.js";
+import type { RowDataPacket } from "mysql2/promise";
+import { getIO } from "../config/socket.js";
 
 interface User {
     name: string,
@@ -38,6 +40,8 @@ export async function postUser(req: Request, res: Response) {
 
         const response = await conn.query(sql, [idUser, name, userName, cpf, key, email, key, telephone, key, passwordHash, idRole]);
 
+        getIO().emit("users:update");
+
         return res.status(201).json({
             success: true,
             message: "Usuário cadastrado com sucesso!"
@@ -70,6 +74,8 @@ export async function getUsers(req: Request, res: Response) {
         // CAST(... AS CHAR): converte o resultado binário da descriptografia para texto.
 
         const [response] = await conn.query(sql, [key, key, key]);
+
+        getIO().emit("users:update");
 
         return res.status(200).json({
             success: true,
@@ -156,7 +162,9 @@ export async function updateUser(req: Request, res: Response) {
             WHERE idUser = ?;
         `;
 
-        await conn.query(sql, [name, userName, cpf, key, email, key, telephone, key, idUser])
+        await conn.query(sql, [name, userName, cpf, key, email, key, telephone, key, idUser]);
+
+        getIO().emit("users:update");
 
         return res.status(200).json({
             success: true,
@@ -166,6 +174,26 @@ export async function updateUser(req: Request, res: Response) {
         return res.status(500).json({
             success: false,
             message: "Erro ao editar usuário."
+        });
+    }
+}
+
+export async function whatRole(req: Request, res: Response) {
+    const { idRole } = req.params;
+    console.log(idRole);
+    try {
+        const sql: string = "SELECT name FROM roles WHERE idRole = ?";
+
+        const [response] = await conn.query<RowDataPacket[]>(sql, [idRole]);
+
+        return res.status(200).json({
+            success: true,
+            role: response[0]?.name
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar função do usuário."
         });
     }
 }

@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import conn from "../config/db.js";
 import type { RowDataPacket, ResultSetHeader } from "mysql2/promise";
+import { getIO } from "../config/socket.js";
 
 interface Lot extends RowDataPacket {
     codLot: string;
@@ -68,8 +69,7 @@ export async function shopping(req: Request, res: Response) {
                 remaining -= quantity;
             }
             
-            (await connection).commit()
-
+            
             if (remaining > 0) {
                 return res.status(400).json({
                     success: false,
@@ -77,7 +77,11 @@ export async function shopping(req: Request, res: Response) {
                 })
             }
         }
+        (await connection).commit()
 
+        getIO().emit("stock:update");
+        getIO().emit("sales:update");
+        
         return res.status(200).json({
             success: true,
             message: "Venda realizada com sucesso"
@@ -106,6 +110,9 @@ export async function getSales(req: Request, res: Response) {
         `
         const [response] = await conn.query(sql);
 
+        getIO().emit("stock:update");
+        getIO().emit("sales:update");
+
         return res.status(200).json({
             success: true,
             data: response
@@ -131,7 +138,7 @@ export async function getItemsSale(req: Request, res: Response) {
 
     try {
         const sql: string = `
-            SELECT i.idItem, p.name, i.quantity, i.price
+            SELECT i.idItem, p.name, p.mark, i.quantity, i.price
             FROM item_sale AS i
             INNER JOIN lots AS l ON l.codLot = i.codLot
             INNER JOIN products AS p ON p.codProduct = l.codProduct

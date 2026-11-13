@@ -1,0 +1,151 @@
+.sales-container {
+    font-family: var(--font);
+}
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+    font-family: var(--font);
+}
+.sales {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+}
+.sales h1 {
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 2px black;
+
+}
+.sales-body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.card-sale {
+    width: auto;
+    background-color: var(--bg-card);
+    border-radius: 10px;
+    transition: all .4s ease;
+}
+
+.card-sale:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px 2px black;
+}
+
+.card-header{
+    background-color: green;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 8px;
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 2px black;
+}
+.card-body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+.card-body .icon {
+    font-size: 36px;
+}
+
+.dataSale {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.dataSale i {
+    font-size: 22px;
+}
+
+.valueSale {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.valueSale i {
+    font-size: 22px;
+}
+
+.card-footer{
+    display: flex;
+    justify-content: center;
+}
+.card-footer{
+    margin: 6px;
+}
+
+.modal-products {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-card);
+    width: auto;
+    border-radius: 22px;
+    animation: appear 0.4s ease;
+}
+
+.modal-header{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.btn-close {
+    width: 30px;
+    height: 30px;
+    font-size: 23px;
+    color: #ececec;
+    background-color: #ed5252;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all .1s ease;
+}
+.btn-close:hover {
+    background-color: #ececec;
+    color: #ed5252;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    text-align: center;
+    max-height: 40vh;
+    overflow: auto;
+}
+
+.modal-body table thead tr th {
+    padding: 6px;
+    font-size: 22px;
+}
+.modal-body table tbody tr td {
+    padding: 8px;
+}
+.modal-body table tbody tr {
+    box-shadow: inset 0 2px 6px 2px gray;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
