@@ -67,7 +67,6 @@ export default function Sales() {
                         <h1>Vendas</h1>
                     </div>
                     <div className="sales-body">
-
                         {sales.map((sale) => (
                             <div className="card-sale" key={sale.idSale}>
                                 <div className="card-header">
