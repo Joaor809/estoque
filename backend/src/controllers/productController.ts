@@ -122,10 +122,11 @@ export async function getAvailableProducts(req: Request, res: Response) {
 
 // Função usada para buscar produtos tanto por Código do Produto quanto pelo próprio nome
 export async function searchProducts(req: Request, res: Response) {
-    const { codProduct, nameProduct } = req.query;
+    const { codProduct, nameProduct, idCategory } = req.query;
     
     const code = String(codProduct || "");
     const name = String(nameProduct || "");
+    const category = String(idCategory || "")
 
     try {
         let sql = `
@@ -141,9 +142,9 @@ export async function searchProducts(req: Request, res: Response) {
         `;
         let params: string [] = [];
 
-        if (code && name) {
-            sql += ` WHERE p.name = ? AND p.codProduct = ?`;
-            params = [name, code];
+        if (code && name && idCategory) {
+            sql += ` WHERE p.name = ? AND p.codProduct = ? AND c.idCategory = ?`;
+            params = [name, code, category];
 
         } else if (code) {
             sql += ` WHERE p.codProduct = ?`;
@@ -153,6 +154,9 @@ export async function searchProducts(req: Request, res: Response) {
             sql += ` WHERE p.name LIKE ?`;
             params = [`%${name}%`];
 
+        } else if (idCategory) {
+            sql += ` WHERE c.idCategory = ?`;
+            params = [category]
         } else {
             return getProducts(req, res);
         }

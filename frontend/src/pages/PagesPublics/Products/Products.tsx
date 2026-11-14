@@ -7,10 +7,11 @@ import { buttonsAdmin, buttonsSeller, buttonsStockClerck } from "../../../config
 import Swal from "sweetalert2";
 import socket from "../../../services/socket.ts";
 import type { Category } from "../../../types/Category.ts";
+import type { NavbarButton } from "../../../types/Navbar.ts";
 function Products() {
 
     const [products, setProducts] = useState<Product[]>([]);
-    const [buttonsNavbar, setButtonsNavbar] = useState([]);
+    const [buttonsNavbar, setButtonsNavbar] = useState<NavbarButton[]>([]);
     const [categorys, setCategorys] = useState<Category[]>([]);
     const [nameProduct, setNameProduct] = useState("");
     const [codProduct, setCodProduct] = useState("");
@@ -19,7 +20,7 @@ function Products() {
     const [openModal, setOpenModal] = useState(false);
 
     const token = localStorage.getItem("token");
-    const idRole = localStorage.getItem("idRole");
+    const idRole = Number(localStorage.getItem("idRole"));
 
     async function loadProducts(): Promise<void> {
         const response = await fetch(`${api}/products`, {
@@ -85,10 +86,48 @@ function Products() {
         setOpenModal(true);
     }
 
+    async function whatRole(): Promise<void> {
+        try {
+
+            const response = await fetch(`${api}/users/roles/${idRole}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+
+            switch (data.role) {
+                case "admin":
+                    setButtonsNavbar(buttonsAdmin);
+                    break;
+
+                case "seller":
+                    setButtonsNavbar(buttonsSeller);
+                    break;
+
+                case "stock_clerck":
+                    setButtonsNavbar(buttonsStockClerck);
+                    break;
+
+                default:
+                    throw new Error("Tipo de usuário inválido");
+            }
+        } catch (error) {
+            console.log(error)
+            window.location.href = "/login";
+        }
+
+    }
+
     useEffect(() => {
+        if (!token || !idRole) {
+            window.location.href = "/login";
+            return;
+        }
 
         loadProducts();
         loadCategorys()
+        whatRole()
     }, [idRole, token])
     return (
         <div className="products-page">
@@ -102,7 +141,7 @@ function Products() {
                     }}>
                         <input type="text" name="nameProduct" id="nameProduct" value={nameProduct} placeholder="Nome do produto" onChange={(event) => setNameProduct(event?.target.value)} />
                         <input type="text" name="codProduct" id="codProduct" value={codProduct} placeholder="Código do produto" onChange={(event) => setCodProduct(event?.target.value)} />
-                        <select name="idCategory" id="idCategory" defaultValue="" onChange={(event) => setIdCategory(event.target.value)}>
+                        <select name="idCategory" id="idCategory" value={idCategory} onChange={(event) => setIdCategory(event.target.value)}>
                             <option disabled value="">Selecionar...</option>
                             {categorys.map((category) => (
                                 <option key={category.idCategory} value={category.idCategory}>{category.name}</option>
@@ -137,6 +176,7 @@ function Products() {
                                             style: "currency",
                                             currency: "BRL"
                                         })}</p>
+                                        <p>Categoria: <strong>{product.category}</strong></p>
                                     </div>
                                 </div>
                             ))}
@@ -144,7 +184,7 @@ function Products() {
                     </div>
                 )}
             </header>
-            <main className="products-page-container" style={{ pointerEvents: openModal ? "none" : "auto"}}>
+            <main className="products-page-container" style={{ pointerEvents: openModal ? "none" : "auto" }}>
                 {products.map((product) => (
                     <div className="card-products-page" key={product.codProduct}>
                         <div className="card-image-products-page">
