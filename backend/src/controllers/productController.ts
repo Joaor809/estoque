@@ -134,7 +134,8 @@ export async function searchProducts(req: Request, res: Response) {
                 p.name,
                 p.mark,
                 p.price,
-                c.name as "category"
+                c.name as "category",
+                p.image
             FROM products AS p
             INNER JOIN categorys AS c ON c.idCategory = p.idCategory
         `;

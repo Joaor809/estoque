@@ -3,11 +3,12 @@
     import { useEffect, useState } from "react";
     import type { Product } from "../../types/Product";
     import getProducts from "../../services/getProducts";
+import socket from "../../services/socket";
 
     function Products() {
         const [products, setProducts] = useState<Product[]>([]);
+        
         const token = localStorage.getItem("token");
-
         if (!token) {
             return window.location.href = "/login";
         }
@@ -16,9 +17,9 @@
             async function loadProducts() {
                 try {
                     const response = await getProducts();
-
+                    
                     console.log(response);
-
+                    
                     if (response.success) {
                         setProducts(response.data);
                     }
@@ -26,8 +27,21 @@
                     console.error("Erro ao carregar produtos:", error);
                 }
             }
+            function handleProductsUpdate() {
+                loadProducts();
+            }
 
+            socket.on("stock:update", handleProductsUpdate);
+
+            socket.connect();
+            
             loadProducts();
+
+            return () => {
+                socket.off("stock:update", handleProductsUpdate);
+                socket.disconnect()
+            }
+
         }, [token]);
 
         return (

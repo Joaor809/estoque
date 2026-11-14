@@ -7,7 +7,7 @@ import upload from "../middleware/upload.js";
 
 const router = Router();
 
-router.post("/", authMiddleware, upload.single("image"), postProducts);
+router.post("/", authMiddleware, upload.single("image"), verifyRole(1, 3), postProducts);
 router.get("/", authMiddleware, getProducts);
 router.get("/search", authMiddleware, searchProducts);
 router.get("/availableProducts", authMiddleware, getAvailableProducts)
