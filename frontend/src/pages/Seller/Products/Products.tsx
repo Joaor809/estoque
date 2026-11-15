@@ -1,17 +1,15 @@
 import "./Products.css";
-import Navbar from "./../../../components/Navbar/Navbar.tsx";
+import Navbar from "../../../components/Navbar/Navbar.tsx";
 import { useEffect, useState } from "react";
 import type { Product } from "../../../types/Product.ts";
 import api from "../../../services/api.ts"
-import { buttonsAdmin, buttonsSeller, buttonsStockClerck } from "../../../config/NavbarItems.ts";
+import { buttonsSeller } from "../../../config/NavbarItems.ts";
 import Swal from "sweetalert2";
-import socket from "../../../services/socket.ts";
 import type { Category } from "../../../types/Category.ts";
-import type { NavbarButton } from "../../../types/Navbar.ts";
+import { getToken } from "../../../services/authService.ts";
 function Products() {
 
     const [products, setProducts] = useState<Product[]>([]);
-    const [buttonsNavbar, setButtonsNavbar] = useState<NavbarButton[]>([]);
     const [categorys, setCategorys] = useState<Category[]>([]);
     const [nameProduct, setNameProduct] = useState("");
     const [codProduct, setCodProduct] = useState("");
@@ -19,8 +17,7 @@ function Products() {
     const [searchProducts, setSearchProducts] = useState<Product[]>([]);
     const [openModal, setOpenModal] = useState(false);
 
-    const token = localStorage.getItem("token");
-    const idRole = Number(localStorage.getItem("idRole"));
+    const token = getToken();
 
     async function loadProducts(): Promise<void> {
         const response = await fetch(`${api}/products`, {
@@ -86,52 +83,14 @@ function Products() {
         setOpenModal(true);
     }
 
-    async function whatRole(): Promise<void> {
-        try {
-
-            const response = await fetch(`${api}/users/roles/${idRole}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const data = await response.json();
-
-            switch (data.role) {
-                case "admin":
-                    setButtonsNavbar(buttonsAdmin);
-                    break;
-
-                case "seller":
-                    setButtonsNavbar(buttonsSeller);
-                    break;
-
-                case "stock_clerck":
-                    setButtonsNavbar(buttonsStockClerck);
-                    break;
-
-                default:
-                    throw new Error("Tipo de usuário inválido");
-            }
-        } catch (error) {
-            console.log(error)
-            window.location.href = "/login";
-        }
-
-    }
-
     useEffect(() => {
-        if (!token || !idRole) {
-            window.location.href = "/login";
-            return;
-        }
 
         loadProducts();
         loadCategorys()
-        whatRole()
-    }, [idRole, token])
+    }, [token])
     return (
         <div className="products-page">
-            <Navbar btn={buttonsNavbar} />
+            <Navbar btn={buttonsSeller} />
             <header className="header-products-page">
                 <h1>Produtos</h1>
                 <div className="search-products-page">

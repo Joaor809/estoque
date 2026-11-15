@@ -138,7 +138,7 @@ function Sell() {
     useEffect(() => {
         async function loadProducts() {
             try {
-                const response = await getProducts(token)
+                const response = await getProducts()
 
                 if (!response.success) {
                     setModalTitle("Erro");
