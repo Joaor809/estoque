@@ -36,3 +36,22 @@
     box-shadow: 0 2px 3px black;
 }
 
+@media(max-width: 480px) {
+    .navbar{
+        display: flex;
+        flex-direction: column;
+    }
+    .btn-link {
+        margin: 0;
+        margin-top: 10px;
+        padding: 8px;
+    }
+}
+
+@media(max-width: 360px) {
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}

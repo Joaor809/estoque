@@ -178,15 +178,71 @@
     }
 }
 
-@media(max-width: 480px) {
+@media (max-width: 480px) {
     .container {
         width: 100%;
     }
+
     .sales-body {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
     }
+
     .card-footer .btn {
         padding: 10px;
+    }
+
+    .modal-products {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        max-height: 85vh;
+        box-sizing: border-box;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .modal-header h1 {
+        font-size: 22px;
+        margin: 0;
+    }
+
+    .modal-body {
+        display: block;
+        max-height: 70vh;
+        overflow: auto;
+        margin: 10px;
+    }
+
+    .modal-body table {
+        width: 100%;
+        min-width: 100%;
+        border-collapse: collapse;
+    }
+
+    .modal-body table thead tr th {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .modal-body table tbody tr td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+}
+
+@media(max-width: 360px) {
+    .sales-body {
+        display: flex;
+        flex-direction: column;
     }
 }

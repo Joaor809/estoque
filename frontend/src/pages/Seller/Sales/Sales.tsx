@@ -123,7 +123,6 @@ export default function Sales() {
                                     <th>Produto</th>
                                     <th>Marca</th>
                                     <th>Quantidade</th>
-                                    <th>Preço unitátio</th>
                                     <th>Preço total</th>
                                 </tr>
                             </thead>
@@ -133,8 +132,10 @@ export default function Sales() {
                                         <td>{product.name}</td>
                                         <td>{product.mark}</td>
                                         <td>{product.quantity}</td>
-                                        <td>{product.price}</td>
-                                        <td>{product.price * product.quantity}</td>
+                                        <td>{Number(product.price * product.quantity).toLocaleString("pt-BR", {
+                                            style: "currency",
+                                            currency: "BRL"
+                                        })}</td>
                                     </tr>
                                 ))}
                             </tbody>
