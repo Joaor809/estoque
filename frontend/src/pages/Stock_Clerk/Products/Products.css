@@ -1,0 +1,101 @@
+.container-page-stock-clerk {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font);
+}
+
+.container-products-page-stock-clerk{
+    display: flex;
+    justify-content: center;
+}
+.card-products-page-stock-clerk {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 1100px;
+    max-height: 70vh;
+    background-color: var(--bg-card);
+    padding: 1rem;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+.card-header-products-stock-clerk {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px;
+}
+
+.card-body-products-stock-clerk {
+    overflow: auto;
+    width: 100%;
+    max-height: 55vh;
+}
+
+.card-body-products-stock-clerk table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card-body-products-stock-clerk table thead tr th {
+    padding: 6px;
+    text-align: center;
+}
+
+.card-body-products-stock-clerk table tbody tr {
+    box-shadow: inset 2px 2px 5px 2px black;
+    border-radius: 8px;
+}
+.card-body-products-stock-clerk table tbody tr:hover {
+    background: lightgray;
+}
+
+.card-body-products-stock-clerk table tbody tr td {
+    padding: 8px;
+    text-align: center;
+}
+
+
+.modal-edit-products-stock-clerk {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-card);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 2px 2px 8px 2px black;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+.form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.form-group select {
+    padding: 10px;
+    outline: none;
+    border: 1px solid gray;
+    transition: all .3s ease;
+    border-radius: 6px;
+    background-color: #2fb9fa;
+    color: white;
+    font-weight: bold;
+}
+.form-group select:focus{
+    border: 1px solid #2fb9fa;
+    box-shadow: 0 0 10px #0e6288;
+}
+
+.button-modal {
+    display: flex;
+    justify-content: center;
+}
+
+.button-close {
+    display: flex;
+    justify-content: end;
+}

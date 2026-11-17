@@ -7,7 +7,7 @@ import { buttonsSeller } from "../../../config/NavbarItems.ts";
 import Swal from "sweetalert2";
 import type { Category } from "../../../types/Category.ts";
 import { getToken } from "../../../services/authService.ts";
-function Products() {
+function ProductsSeller() {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [categorys, setCategorys] = useState<Category[]>([]);
@@ -170,4 +170,4 @@ function Products() {
     );
 }
 
-export default Products;
+export default ProductsSeller;

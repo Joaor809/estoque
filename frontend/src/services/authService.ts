@@ -3,7 +3,7 @@ import api from "./api";
 export const isAuthenticated = () => localStorage.getItem("token")  !== null;
 
 export const getToken = () => {
-    localStorage.getItem("token");
+    return localStorage.getItem("token");
 };
 
 export const getRole = async (): Promise<string> => {

@@ -228,7 +228,7 @@ export async function updateProducts(req: Request, res: Response){
             message: "Código do produto não informado!"
         });
     }
-    if (!nameProduct || !mark || !price || idCategory) {
+    if (!nameProduct || !mark || !price || !idCategory) {
         return res.status(500).json({
             success: true,
             message: "Preencha todos os campos!"

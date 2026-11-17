@@ -1,5 +1,5 @@
 export const buttonsSeller = [
-    { name: "Produtos", link: "/products" },
+    { name: "Produtos", link: "/seller/products" },
     { name: "Vender", link: "/seller/sell" },
     { name: "Vendas", link: "/seller/sales" }
 ];
