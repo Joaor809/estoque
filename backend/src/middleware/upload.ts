@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
 
     // Define a pasta onde as imagens serão salvas.
     destination: (req, file, cb) => {
-        cb(null, path.resolve("uploads/products"));
+        cb(null, path.resolve("upload/products"));
     },
     // req: request
     // file: arquivo

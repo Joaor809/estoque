@@ -99,3 +99,25 @@
     display: flex;
     justify-content: end;
 }
+
+.modal-register-products-stock-clerk {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem;
+    background-color: var(--bg-card);
+    min-width: 25%;
+    box-shadow: 2px 2px 8px 2px black;
+    border-radius: 12px;
+}
+
+.button-register {
+    display: flex;
+    justify-content: center;
+}
+
+.form-group .input-image{
+    padding: 8px;
+    height: auto;
+}

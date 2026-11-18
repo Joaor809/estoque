@@ -13,12 +13,20 @@ function ProductsStockClerk() {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [category, setCategory] = useState<Category[]>([]);
-    const [openModal, setOpenModal] = useState(false);
+    const [openModalEdit, setOpenModalEdit] = useState(false);
     const [codProduct, setCodProduct] = useState("");
     const [nameProduct, setNameProduct] = useState("");
     const [markProduct, setMarkProduct] = useState("");
     const [priceProduct, setPriceProduct] = useState("");
     const [categoryProduct, setCategoryProduct] = useState("");
+
+    // Registro
+    const [nameProductRegister, setNameProductRegister] = useState("");
+    const [markProductRegister, setMarkProductRegister] = useState("");
+    const [priceProductRegister, setPriceProductRegister] = useState("");
+    const [categoryProductRegister, setCategoryProductRegister] = useState(0);
+    const [imageProductRegister, setImageProductRegister] = useState<File | null>(null);
+    const [openModalRegister, setOpenModalRegister] = useState(false);
 
     const token: string | null = getToken();
 
@@ -94,7 +102,7 @@ function ProductsStockClerk() {
 
             const product = data.data[0];
 
-            const selectedCategory = category.find((item) => item.name = product.category);
+            const selectedCategory = category.find((item) => item.name === product.category);
 
             setNameProduct(product.name);
             setMarkProduct(product.mark);
@@ -123,11 +131,11 @@ function ProductsStockClerk() {
                     idCategory: categoryProduct
                 })
             });
-            
+
             if (!response.ok) {
                 throw new Error("Erro ao editar produtos.");
             }
-            
+
             Swal.fire({
                 title: "Produto atualizado com sucesso!"
             });
@@ -137,12 +145,68 @@ function ProductsStockClerk() {
             setMarkProduct("");
             setPriceProduct("");
             setCategoryProduct("");
-            setOpenModal(false);
-        } catch(error) {
+            setOpenModalEdit(false);
+        } catch (error) {
             console.log(error)
             Swal.fire({
                 title: "Erro ao editar produto"
             })
+        }
+    }
+
+    async function registerProduct(): Promise<void> {
+        const result = await Swal.fire({
+            title: "Você deseja realmente cadastrar este produto?",
+            confirmButtonText: "Sim, cadastrar!",
+            cancelButtonText: "Não, cancelar"
+        });
+
+        if (!result.isConfirmed) {
+            Swal.fire({
+                icon: "error",
+                title: "Operação cancelada!"
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("nameProduct", nameProductRegister);
+        formData.append("mark", markProductRegister);
+        formData.append("price", priceProductRegister);
+        formData.append("idCategory", String(categoryProductRegister));
+
+        if (imageProductRegister) {
+            formData.append("image", imageProductRegister);
+        }
+
+        try {
+            const response = await fetch(`${api}/products`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao cadastrar produto");
+            }
+
+            Swal.fire({
+                icon: "success",
+                title: "Produto cadastrado com sucesso!",
+            });
+
+            setNameProductRegister("");
+            setMarkProductRegister("");
+            setPriceProductRegister("");
+            setCategoryProductRegister(0);
+            setOpenModalRegister(false);
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                title: "Erro ao cadastrar produto."
+            });
         }
     }
 
@@ -169,7 +233,7 @@ function ProductsStockClerk() {
                     <div className="card-header-products-stock-clerk">
                         <h1>Produtos</h1>
                         <div className="tbn-register-product">
-                            <button type="button" className="btn" onClick={() => { setOpenModal(true) }}>Cadastrar novo produto</button>
+                            <button type="button" className="btn" onClick={() => { setOpenModalRegister(true) }}>Cadastrar novo produto</button>
                         </div>
                     </div>
                     <div className="card-body-products-stock-clerk">
@@ -198,7 +262,7 @@ function ProductsStockClerk() {
                                             <td>{product.category}</td>
                                             <td><button className="btn" type="button" onClick={() => {
                                                 edit(product.codProduct);
-                                                setOpenModal(true);
+                                                setOpenModalEdit(true);
                                                 setCodProduct(product.codProduct);
                                             }}>Editar</button></td>
                                         </tr>
@@ -213,10 +277,10 @@ function ProductsStockClerk() {
                     </div>
                 </div>
             </main>
-            {openModal && (
+            {openModalEdit && (
                 <div className="modal-edit-products-stock-clerk">
                     <div className="button-close">
-                        <button type="button" className="btn-close" onClick={() => { setOpenModal(false) }}>X</button>
+                        <button type="button" className="btn-close" onClick={() => { setOpenModalEdit(false) }}>X</button>
                     </div>
                     <form method="post" onSubmit={(event) => {
                         event.preventDefault();
@@ -245,6 +309,68 @@ function ProductsStockClerk() {
                         </div>
                         <div className="button-modal">
                             <button type="submit" className="btn">Confirmar edição</button>
+                        </div>
+                    </form>
+                </div>
+            )}
+            {openModalRegister && (
+
+                <div className="modal-register-products-stock-clerk">
+                    <div className="button-close">
+                        <button type="button" className="btn-close" onClick={() => setOpenModalRegister(false)}>X</button>
+                    </div>
+                    <form method="post" onSubmit={(event) => {
+                        event.preventDefault();
+                        registerProduct();
+                    }}>
+                        <div className="form-group">
+                            <label>Nome</label>
+                            <input type="text" value={nameProductRegister} onChange={(event) => setNameProductRegister(event.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label>Marca</label>
+                            <input type="text" value={markProductRegister} onChange={(event) => setMarkProductRegister(event.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label>Preço</label>
+                            <input type="text" value={priceProductRegister} onChange={(event) => setPriceProductRegister(event.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label>Categoria</label>
+                            <select value={categoryProductRegister} onChange={(event) => setCategoryProductRegister(Number(event.target.value))}>
+                                <option value="" selected>Selecionar...</option>
+                                {category.map((category) => (
+                                    <option value={category.idCategory} key={category.idCategory}>{category.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <input className="input-image" type="file" accept="image/*" onChange={(event) => {
+                                const file = event.target.files?.[0];
+
+                                if (!file) {
+                                    setImageProductRegister(null);
+                                    return;
+                                }
+
+                                if (!file.type.startsWith("image/")) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Arquivo inválido!",
+                                        text: "Selecione apenas imagens."
+                                    });
+
+                                    event.target.value = "";
+                                    setImageProductRegister(null);
+                                    return;
+                                }
+
+                                setImageProductRegister(file);
+                            }}
+                            />
+                        </div>
+                        <div className="button-register">
+                            <button type="submit" className="btn">Registrar produto</button>
                         </div>
                     </form>
                 </div>

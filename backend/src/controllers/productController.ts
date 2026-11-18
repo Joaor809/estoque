@@ -14,53 +14,75 @@ interface Products {
 }
 
 // Função que é usadas para cadastrar produtos
-export async function postProducts(req: Request, res: Response){
+export async function postProducts(req: Request, res: Response) {
     try {
-        
+
         let codProduct = "";
         let exists = true;
         let attempts = 0;
-        
+
+        // Gera um código único para o produto
         while (exists && attempts < 5) {
-                codProduct = generateCode(10000000, 90000000);
-                
-                const [response] = await conn.query<RowDataPacket[]>("SELECT * FROM products WHERE codProduct = ?", [codProduct]);
-                
-                exists = response.length > 0;
-                attempts++;
-            }
-    
-            const { nameProduct, mark, price, idCategory} = req.body as Products;
 
-            const image = req.file ? `/upload/products/${req.file.filename}` : null;
-    
-            if (!nameProduct || !mark || !price || !idCategory) {
-                return res.status(500).json({
-                    success: false,
-                    message: "Preencha todos os campos!"
-                });
-            }
-    
-            const sql = `
-                INSERT INTO products(codProduct, name, mark, price, idCategory, image)
-                VALUES (?, ?, ?, ?, ?, ?)
-            `;
-    
-            await conn.query(sql, [codProduct, nameProduct, mark, price, idCategory, image]);
+            codProduct = generateCode(10000000, 90000000);
 
-            getIO().emit("products:update");
-    
-            return res.status(201).json({
-                success: true,
-                message: "Produto cadastrado com sucesso!"
-            });
-    
-        } catch (error) {
+            const [response] = await conn.query<RowDataPacket[]>(
+                "SELECT * FROM products WHERE codProduct = ?",
+                [codProduct]
+            );
+
+            exists = response.length > 0;
+            attempts++;
+        }
+
+        if (exists) {
             return res.status(500).json({
                 success: false,
-                message: "Erro ao cadastrar produto!"
+                message: "Não foi possível gerar o código do produto."
             });
         }
+
+        const { nameProduct, mark, price, idCategory } = req.body as Products;
+
+        const image = req.file ? `/upload/products/${req.file.filename}` : null;
+
+        if (!nameProduct || !mark || !price || !idCategory) {
+            return res.status(400).json({
+                success: false,
+                message: "Preencha todos os campos!"
+            });
+        }
+
+        const sql = `
+            INSERT INTO products(codProduct, name, mark, price, idCategory, image)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+
+        await conn.query(sql, [
+            codProduct,
+            nameProduct,
+            mark,
+            price,
+            idCategory,
+            image
+        ]);
+
+        getIO().emit("products:update");
+
+        return res.status(201).json({
+            success: true,
+            message: "Produto cadastrado com sucesso!"
+        });
+
+    } catch (error) {
+
+        console.error("Erro ao cadastrar produto:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao cadastrar produto!"
+        });
+    }
 }
     
 // Função que é usada para listar todos os produtos

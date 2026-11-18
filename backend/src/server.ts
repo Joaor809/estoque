@@ -15,10 +15,15 @@ import { initializeSocket } from "./config/socket.js";
 dotenv.config()
 
 const server = express();
-server.use("/upload", express.static(path.resolve("upload")));
 
+server.use(cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 server.use(express.json());
-server.use(cors());
+
+server.use("/upload", express.static(path.resolve("upload")));
 
 server.use("/products", Product);
 server.use("/categorys", Categorys);
