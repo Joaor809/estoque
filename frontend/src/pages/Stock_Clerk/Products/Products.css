@@ -1,3 +1,4 @@
+/* Container da página inteira */
 .container-page-stock-clerk {
     display: flex;
     flex-direction: column;
@@ -8,16 +9,21 @@
     display: flex;
     justify-content: center;
 }
+
+
+/* Card principal da página */
 .card-products-page-stock-clerk {
     margin-top: 1rem;
     width: 100%;
     max-width: 1100px;
-    max-height: 70vh;
+    height: auto;
     background-color: var(--bg-card);
     padding: 1rem;
     border-radius: 12px;
     box-sizing: border-box;
 }
+
+/* Header do card principal */
 .card-header-products-stock-clerk {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -28,6 +34,7 @@
     justify-content: end;
 }
 
+/* Formulário de busca de produtos */
 .search-products-page-stock-clerk form{
     display: grid;
     width: 100%;
@@ -51,6 +58,7 @@
     box-shadow: 0 0 10px #0e6288;
 }
 
+/* Corpo do card onde fica a tabela */
 .card-body-products-stock-clerk {
     overflow: auto;
     width: 100%;
@@ -80,7 +88,7 @@
     text-align: center;
 }
 
-
+/* Modal de edição de produtos */
 .modal-edit-products-stock-clerk {
     position: absolute;
     top: 50%;
@@ -127,6 +135,7 @@
     justify-content: end;
 }
 
+/* Modal de registro de novos produtos */
 .modal-register-products-stock-clerk {
     position: absolute;
     top: 50%;
@@ -147,4 +156,84 @@
 .form-group .input-image{
     padding: 8px;
     height: auto;
+}
+
+
+@media(max-width: 1024px){
+    .modal-search-products-page {
+        width: 40vw;
+    }   
+}
+
+@media(max-width: 768px){
+    .search-products-page-stock-clerk form input {
+        width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .container-products-page-stock-clerk {
+        padding: 0 10px;
+    }
+
+    .card-products-page-stock-clerk {
+        margin-top: 10px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .card-header-products-stock-clerk {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 5px;
+    }
+
+    .btn-register-product button {
+        width: 100%;
+    }
+
+    .search-products-page-stock-clerk {
+        width: 100%;
+    }
+
+    .search-products-page-stock-clerk form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .search-products-page-stock-clerk form input,
+    .search-products-page-stock-clerk form select,
+    .search-products-page-stock-clerk form button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card-body-products-stock-clerk {
+        width: 100%;
+        max-height: 50vh;
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    .modal-search-products-page {
+        width: 80vw;
+    }
+
+    .modal-edit-products-stock-clerk,
+    .modal-register-products-stock-clerk {
+        position: fixed;
+        width: 90%;
+        max-width: 400px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .card-body-products-stock-clerk table tbody td button{
+        width: 70px;
+    }
 }
