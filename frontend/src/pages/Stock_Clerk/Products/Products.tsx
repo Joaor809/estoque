@@ -8,6 +8,8 @@ import api from "../../../services/api";
 import socket from "../../../services/socket";
 import Swal from "sweetalert2";
 import type { Category } from "../../../types/Category";
+import searchProduct from "../../../services/search";
+import CardProduct from "../../../components/CardProduct/CardProduct";
 
 function ProductsStockClerk() {
 
@@ -27,6 +29,13 @@ function ProductsStockClerk() {
     const [categoryProductRegister, setCategoryProductRegister] = useState(0);
     const [imageProductRegister, setImageProductRegister] = useState<File | null>(null);
     const [openModalRegister, setOpenModalRegister] = useState(false);
+
+    // Busca
+    const [searchNameProduct, setSearchNameProduct] = useState("");
+    const [searchCodProduct, setSearchCodProduct] = useState("");
+    const [searchIdCategory, setSearchIdCategory] = useState("");
+    const [openModalSearch, setOpenModalSearch] = useState(false);
+    const [searchProducts, setSearchProducts] = useState<Product[]>([])
 
     const token: string | null = getToken();
 
@@ -82,7 +91,7 @@ function ProductsStockClerk() {
         }
     }
 
-    async function edit(codProduct: string) {
+    async function edit(codProduct: string): Promise<void> {
         if (!token) return;
 
         try {
@@ -210,6 +219,28 @@ function ProductsStockClerk() {
         }
     }
 
+    async function search(): Promise<void> {
+
+        if (!searchNameProduct && !searchCodProduct && !searchIdCategory) {
+            Swal.fire({
+                title: "Preencha pelo menos algum dos campos!"
+            });
+            return;
+        }
+
+        const response = await searchProduct(searchNameProduct, searchCodProduct, searchIdCategory);
+
+        if (!response || response.length === 0) {
+            Swal.fire({
+                title: "Produto não encontrado!"
+            });
+            return;
+        }
+
+        setSearchProducts(response);
+        setOpenModalSearch(true);
+    }
+
     useEffect(() => {
         socket.connect();
 
@@ -232,8 +263,25 @@ function ProductsStockClerk() {
                 <div className="card-products-page-stock-clerk">
                     <div className="card-header-products-stock-clerk">
                         <h1>Produtos</h1>
-                        <div className="tbn-register-product">
+                        <div className="btn-register-product">
                             <button type="button" className="btn" onClick={() => { setOpenModalRegister(true) }}>Cadastrar novo produto</button>
+                        </div>
+                        <div className="search-products-page-stock-clerk">
+                            <form method="post" onSubmit={(event) => {
+                                event.preventDefault()
+                                search()
+                            }}>
+                                <input type="text" value={searchNameProduct} onChange={(event) => setSearchNameProduct(event.target.value)}
+                                    placeholder="Nome do produto" />
+                                <input type="text" value={searchCodProduct} onChange={(event) => { setSearchCodProduct(event.target.value) }} placeholder="Cód. Produto" />
+                                <select value={searchIdCategory} onChange={(event) => { setSearchIdCategory(event.target.value) }}>
+                                    <option value="">Selecionar...</option>
+                                    {category.map((item) => (
+                                        <option key={item.idCategory} value={item.idCategory}>{item.name}</option>
+                                    ))}
+                                </select>
+                                <button className="btn">Buscar</button>
+                            </form>
                         </div>
                     </div>
                     <div className="card-body-products-stock-clerk">
@@ -302,8 +350,8 @@ function ProductsStockClerk() {
                             <select name="category" id="category" value={categoryProduct} onChange={(event) => setCategoryProduct
                                 (event.target.value)}>
                                 <option disabled value="">Selecionar...</option>
-                                {category.map((category) => (
-                                    <option key={category.idCategory} value={category.idCategory}>{category.name}</option>
+                                {category.map((item) => (
+                                    <option key={item.idCategory} value={item.idCategory}>{item.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -373,6 +421,25 @@ function ProductsStockClerk() {
                             <button type="submit" className="btn">Registrar produto</button>
                         </div>
                     </form>
+                </div>
+            )}
+
+            {openModalSearch && (
+                <div className="modal-search-products-page">
+                    <div className="modal-header-products-page">
+                        <div className="modal-title-header-products-page">
+                            <h1>Produtos</h1>
+                        </div>
+                        <button className="btn-close" onClick={(event) => {
+                            setOpenModalSearch(false);
+                            setSearchProducts([]);
+                        }}>X</button>
+                    </div>
+                    <div className="modal-body-products-page">
+                        {searchProducts.map((product) => (
+                            <CardProduct product={product}/>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

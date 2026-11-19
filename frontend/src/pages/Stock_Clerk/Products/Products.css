@@ -19,9 +19,36 @@
     box-sizing: border-box;
 }
 .card-header-products-stock-clerk {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     margin: 12px;
+}
+.card-header-products-stock-clerk .btn-register-product{
+    display: flex;
+    justify-content: end;
+}
+
+.search-products-page-stock-clerk form{
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center ;
+    gap: 1rem;
+}
+
+.search-products-page-stock-clerk form select {
+    padding: 10px;
+    outline: none;
+    border: 1px solid gray;
+    transition: all .3s ease;
+    border-radius: 6px;
+    background-color: #2fb9fa;
+    color: white;
+    font-weight: bold;
+}
+.search-products-page-stock-clerk form select:focus{
+    border: 1px solid #2fb9fa;
+    box-shadow: 0 0 10px #0e6288;
 }
 
 .card-body-products-stock-clerk {

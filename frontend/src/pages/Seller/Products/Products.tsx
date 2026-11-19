@@ -7,6 +7,8 @@ import { buttonsSeller } from "../../../config/NavbarItems.ts";
 import Swal from "sweetalert2";
 import type { Category } from "../../../types/Category.ts";
 import { getToken } from "../../../services/authService.ts";
+import searchProduct from "../../../services/search.ts";
+import CardProduct from "../../../components/CardProduct/CardProduct.tsx";
 function ProductsSeller() {
 
     const [products, setProducts] = useState<Product[]>([]);
@@ -49,38 +51,27 @@ function ProductsSeller() {
         setCategorys(data.data);
     }
 
-    async function searchProduct(): Promise<void> {
+    async function search(): Promise<void> {
+
         if (!nameProduct && !codProduct && !idCategory) {
             Swal.fire({
-                title: "Preencha alguns dos campos!"
+                title: "Preencha algum dos campos!"
             });
             return;
         }
 
-        const params = new URLSearchParams();
+        const response = await searchProduct(nameProduct, codProduct, idCategory);
 
-        if (nameProduct) {
-            params.append("nameProduct", nameProduct);
+        if (!response || response.length === 0) {
+            Swal.fire({
+                title: "Produto não encontrado!"
+            });
+            return;
         }
-
-        if (codProduct) {
-            params.append("codProduct", codProduct);
-        }
-
-        if (idCategory) {
-            params.append("idCategory", idCategory);
-        }
-
-        const response = await fetch(`${api}/products/search?${params.toString()}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        const data = await response.json();
-
-        setSearchProducts(data.data);
+        
         setOpenModal(true);
+        setSearchProducts(response);
+
     }
 
     useEffect(() => {
@@ -96,7 +87,7 @@ function ProductsSeller() {
                 <div className="search-products-page">
                     <form method="post" onSubmit={(event) => {
                         event.preventDefault()
-                        searchProduct();
+                        search();
                     }}>
                         <input type="text" name="nameProduct" id="nameProduct" value={nameProduct} placeholder="Nome do produto" onChange={(event) => setNameProduct(event?.target.value)} />
                         <input type="text" name="codProduct" id="codProduct" value={codProduct} placeholder="Código do produto" onChange={(event) => setCodProduct(event?.target.value)} />
@@ -123,21 +114,7 @@ function ProductsSeller() {
                         </div>
                         <div className="modal-body-products-page">
                             {searchProducts.map((product) => (
-                                <div className="card-product" key={product.codProduct}>
-                                    <div className="card-img">
-                                        <img src={`${api}${product.image}`} alt={product.name} />
-                                    </div>
-                                    <div className="card-info">
-                                        <h2>{product.name}</h2>
-                                        <p>Cod: <strong>{product.codProduct}</strong></p>
-                                        <p>Marca: {product.mark}</p>
-                                        <p>Preço: {product.price.toLocaleString("pt-BR", {
-                                            style: "currency",
-                                            currency: "BRL"
-                                        })}</p>
-                                        <p>Categoria: <strong>{product.category}</strong></p>
-                                    </div>
-                                </div>
+                                <CardProduct product={product}/>
                             ))}
                         </div>
                     </div>
