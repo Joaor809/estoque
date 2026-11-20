@@ -17,7 +17,7 @@ interface Lot {
 export async function getLots(req: Request, res: Response) {
     try {
         const sql: string = `
-            SELECT p.codProduct, l.codLot, p.name, p.mark, l.quantity, l.entryDate, l.expirationDate, p.price, p.image
+            SELECT p.codProduct, l.codLot, p.name, p.mark, l.quantity, l.entryDate, l.expirationDate, p.price, p.image, l.available
             FROM products AS p
             INNER JOIN lots AS l ON l.codProduct = l.codProduct;
         `;
@@ -228,6 +228,40 @@ export async function deleteLots(req: Request, res: Response) {
         return res.status(400).json({
             success: false,
             message: "Erro ao deletar lote."
+        });
+    }
+}
+
+export async function updateAvailableLots(req: Request, res: Response) {
+    try {
+        const { codLot } = req.params;
+        const { available } = req.body;
+
+        if (available !== 0 && available !== 1) {
+            return res.status(400).json({
+                success: false,
+                message: "Disponibilidade inválida"
+            });
+        }
+
+        const [result] = await conn.query<ResultSetHeader>("UPDATE lots SET available = ? WHERE codLot = ?", [available, codLot]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Lote não encontrado."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Disponibilidade atualizada."
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao atualizar disponibilidade."
         });
     }
 }

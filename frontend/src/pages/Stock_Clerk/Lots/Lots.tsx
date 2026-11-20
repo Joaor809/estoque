@@ -7,6 +7,7 @@ import type { Lots } from "../../../types/Lot";
 import CardLot from "../../../components/CardLot/CardLot";
 import Swal from "sweetalert2";
 import { getToken } from "../../../services/authService";
+import socket from "../../../services/socket";
 
 function Lots() {
 
@@ -34,7 +35,16 @@ function Lots() {
     }
 
     useEffect(() => {
+        socket.connect();
+
         loadLots();
+
+        socket.on("stock:update", loadLots);
+
+        return () => {
+            socket.off("stock:update", loadLots);
+            socket.disconnect();
+        }
     }, [])
 
     return (
@@ -48,8 +58,8 @@ function Lots() {
                     </div>
                 </div>
                 <div className="card-body-lots">
-                    {lots.map((lot) => (
-                        <CardLot key={lot.codLot} lot={lot} />
+                    {lots.map((lot, index) => (
+                        <CardLot key={index} lot={lot} />
                     ))}
                 </div>
             </div>

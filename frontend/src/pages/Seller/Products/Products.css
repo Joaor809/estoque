@@ -136,6 +136,12 @@
     }
 }
 
+@media(max-width: 780px) {
+    .search-products-page form input {
+        width: 100%;
+    }
+}
+
 @media(max-width: 768px) {
     .header-products-page {
         display: flex;
