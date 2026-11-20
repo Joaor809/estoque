@@ -12,7 +12,7 @@ export const buttonsAdmin = [
 ];
 
 export const buttonsStockClerck = [
-    { name: "Produtos", link: "/products" },
-    { name: "Estoque", link: "/lots" },
-    { name: "Vendas", link: "/Vendas" }
+    { name: "Produtos", link: "/stock_clerk/products" },
+    { name: "Estoque", link: "/stock_clerk/lots" },
+    { name: "Vendas", link: "/stock_clerk/sales" }
 ]

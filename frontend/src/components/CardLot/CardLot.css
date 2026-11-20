@@ -1,123 +1,61 @@
 .card-lot {
-    display: flex;
-    flex-direction: column;
-    width: 14rem;
-    height: 17rem;
-    font-family: "Roboto", system-ui;
-    background-color: #eaeaea;
-    box-shadow: 0 8px 6px -5px gray;
-    margin: 1rem;
-    transition: all .1s ease-in-out;
-    overflow: hidden;
-}
-
-.card-lot:hover {
-    box-shadow: 0 10px 8px -6px black;
-    transform: translateY(-4px);
-}
-
-.card-header h1 {
-    font-size: 24px;
-    text-align: center;
-    margin: 1rem;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 10px;
-    flex: 1;
-}
-
-.card-body h3 {
-    margin: 0 0 10px;
-}
-
-.card-body img {
-    width: 70%;
-    height: 90px;
-    object-fit: contain;
-}
-
-.card-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     width: 100%;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.card-info span {
-    display: block;
-    font-size: 14px;
-}
-
-.card-footer {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
-@media (max-width: 480px) {
-    .card-lot {
-        width: 100%;
-        max-width: 14rem;
-        margin: 10px auto;
-    }
-}
-
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    max-width: 400px;
-    max-height: 85vh;
-    background-color: #eaeaea;
-    font-family: "Roboto", system-ui;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    background-color: white;
     border-radius: 8px;
-    z-index: 1000;
-    overflow: hidden;
 }
 
-.modal-header {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-}
-
-.modal-header h1 {
-    font-size: 22px;
-    margin: 10px;
-}
-
-.modal-content {
+.card-lot-header {
+    background-color: #1a551a;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     display: flex;
-    flex-direction: column;
-    padding: 15px 20px;
-    gap: 8px;
-    overflow-y: auto;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    color: white;
+}
+.card-lot-header i {
+    font-size: 24px;
+    margin-right: 10px;
 }
 
-.modal-content h3 {
-    text-align: center;
-    margin: 0 0 10px;
-}
-
-.modal-content p {
-    margin: 0;
-    font-size: 15px;
-}
-
-.modal-footer {
+.card-lot-body {
     display: flex;
+    gap: 16px;
+    align-items: center;
     justify-content: center;
-    padding: 15px;
-    border-top: 1px solid #ccc;
+}
+.card-lot-body img {
+    width: 120px;
+}
+
+.lot-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.lot-info-item i {
+    font-size: 18px;
+    color: #1a551a;
+}
+
+.card-lot-footer {
+    border-top: 2px solid gray;
+    padding: 10px;
+}
+.card-lot-footer button {
+    border: none;
+    background-color: #1a551a;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all .1s ease;
+    cursor: pointer;
+}
+.card-lot-footer button:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 4px 2px black;
 }

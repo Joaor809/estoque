@@ -1,0 +1,18 @@
+.container-lots-page-stock-clerk {
+    font-family: var(--font);
+}
+
+.card-lots-stock-clerk {
+    width: 70vw;
+    margin: 0 auto;
+    margin-top: 2rem;
+    background-color: var(--bg-card);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.card-lots-stock-clerk .card-header-lots{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
