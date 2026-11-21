@@ -114,14 +114,13 @@ export async function getProducts(req: Request, res: Response) {
 export async function getAvailableProducts(req: Request, res: Response) {
     try {
         const sql: string = `
-            SELECT p.codProduct, p.name, p.mark, p.price, c.name AS "category", p.image, l.quantity
+            SELECT p.codProduct, p.name, p.mark, p.price, c.name AS "category", p.image, sum(l.quantity) as 'quantity'
             FROM products AS p
             INNER JOIN categorys AS c ON c.idCategory = p.idcategory
             INNER JOIN lots AS l ON l.codProduct = p.codProduct
             WHERE l.codProduct = p.codProduct
-                AND l.quantity > 0
-                AND l.expirationDate >= CURDATE()
-                AND l.available = 1;
+                AND l.available = 1
+            GROUP BY p.name;
         `;
 
         const [response] = await conn.query(sql);

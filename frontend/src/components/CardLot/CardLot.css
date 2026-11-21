@@ -2,7 +2,8 @@
 .card-lot {
     width: 100%;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 6px 2px black;
 }
 
 .card-lot-header {
@@ -29,6 +30,7 @@
     gap: 16px;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 .card-lot-body img {
     width: 120px;
@@ -49,6 +51,9 @@
 .card-lot-footer {
     border-top: 2px solid gray;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .card-lot-footer button {
     border: none;
@@ -70,13 +75,20 @@
 
 /* modal de informações do lote  */
 .card-modal-lots {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);    
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+
     background-color: var(--bg-card);
     border-radius: 10px;
     box-shadow: 2px 2px 8px 2px black;
+    z-index: 1001;
 }
 
 .card-modal-lots .card-modal-header {
@@ -95,6 +107,9 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    border-bottom: 2px solid gray;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .card-modal-lots .card-modal-body img {
@@ -109,6 +124,32 @@
 .card-modal-lots .card-modal-body .info-lot p {
     font-size: 16px;
     margin-bottom: 6px;
+}
+
+.card-modal-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+.card-modal-footer .btn-delete {
+    background-color: #e96565;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    box-shadow: none;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all .1s ease;
+}
+.card-modal-footer .btn-delete:hover {
+    color: #e96565;
+    background-color: #ddd;
+    text-shadow: none;
+    box-shadow: 2px 2px 6px 3px black;
+    transform: translateY(-2px);
 }
 
 .card-lot-footer .btn-block {

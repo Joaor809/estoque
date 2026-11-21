@@ -11,8 +11,146 @@
     border-radius: 12px;
 }
 
-.card-lots-stock-clerk .card-header-lots{
+.card-lots-stock-clerk .card-header-lots {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.good-products {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    background-color: var(--bg-card);
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 2px 2px 8px 2px black;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.good-products h1 {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.good-products .lots {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.not-lots {
+    display: flex;
+    justify-content: center;
+}
+
+.invalid-products {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    background-color: var(--bg-card);
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 2px 2px 8px 2px black;
+    max-height: 75vh;
+}
+
+.invalid-products h1 {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.invalid-products .lots {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.not-lots {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* modal para registrar novos lotes  */
+
+.modal-register-lots-stock-clerk {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    max-width: 35vw;
+    max-height: 85vh;
+    overflow-y: auto;
+
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.modal-register-lots-stock-clerk form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.modal-register-lots-stock-clerk .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal-register-lots-stock-clerk label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-register-lots-stock-clerk input,
+.modal-register-lots-stock-clerk select {
+    width: 100%;
+    border: 1px solid #ccc;
+    height: auto;
+    border-radius: 7px;
+    background: #fff;
+    color: black;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-register-lots-stock-clerk input:focus,
+.modal-register-lots-stock-clerk select:focus {
+    border-color: #198754;
+}
+
+.modal-register-lots-stock-clerk input:hover,
+.modal-register-lots-stock-clerk select:hover {
+    border-color: #198754;
+}
+
+.modal-register-lots-stock-clerk input[type="date"] {
+    cursor: pointer;
+}
+
+.modal-register-lots-info-stock-clerk {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-submit {
+    display: flex;
+    justify-content: center;
 }

@@ -56,7 +56,9 @@ export async function getLotByCodLot(req: Request, res: Response) {
             SELECT l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate
             FROM lots AS l
             INNER JOIN products AS p ON l.codProduct = p.codProduct
-            WHERE l.codLot = ?;
+            WHERE l.codLot = ?
+            AND expirationDate >= CURDATE()
+            AND l.quantity > 0.;
         `;
 
         const [response] = await conn.query<RowDataPacket[]>(sql, [codLot]);
@@ -161,47 +163,8 @@ export async function postLots(req: Request, res: Response) {
     }
 }
 
-// Função usada para atualizar lotes
-export async function updateLots(req: Request, res: Response) {
-    const { codLot } = req.params;
-
-    if (!codLot) {
-        return res.status(400).json({
-            success: false,
-            message: "Código do lote não fornecido."
-        });
-    }
-
-    try {
-        const { codProduct, quantity, entryDate, expirationDate } = req.body as Lot;
-
-        const sql: string = "UPDATE lots SET codProduct = ?, quantity = ?, entryDate = ?, expirationDate = ? WHERE codLot = ?;";
-
-        const [response] = await conn.query<ResultSetHeader>(sql, [codProduct, quantity, entryDate, expirationDate, codLot]);
-
-        if (response.affectedRows > 0) {
-
-            getIO().emit("stock:update");
-
-            return res.status(200).json({
-                success: true,
-                message: "Produto atualizado com sucesso!"
-            });
-        } else {
-            return res.status(404).json({
-                success: false,
-                message: "Lote não encontrado!"
-            });
-        }
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Erro ao atualizar lote."
-        });
-    }
-}
-
 // Função usada para deletar lotes
+
 export async function deleteLots(req: Request, res: Response) {
     const { codLot } = req.params;
 
@@ -213,25 +176,39 @@ export async function deleteLots(req: Request, res: Response) {
     }
 
     try {
-        const sql: string = "DELETE FROM lots WHERE codLot = ?;";
+        const sql = `
+            UPDATE lots
+            SET deleted = 1, available = 0
+            WHERE codLot = ?
+        `;
 
-        await conn.query(sql, [codLot]);
+        const [result] = await conn.query<ResultSetHeader>(sql, [codLot]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Lote não encontrado."
+            });
+        }
 
         getIO().emit("stock:update");
 
-        return res.status(400).json({
+        return res.status(200).json({
             success: true,
-            message: "Lote deletado com sucesso!"
+            message: "Lote removido com sucesso!"
         });
 
     } catch (error) {
-        return res.status(400).json({
+        console.error("Erro ao deletar lote:", error);
+
+        return res.status(500).json({
             success: false,
             message: "Erro ao deletar lote."
         });
     }
 }
 
+// Função usada para mudar o status do lote 
 export async function updateAvailableLots(req: Request, res: Response) {
     try {
         const { codLot } = req.params;
@@ -253,6 +230,8 @@ export async function updateAvailableLots(req: Request, res: Response) {
             });
         }
 
+        getIO().emit("stock:update");
+
         return res.status(200).json({
             success: true,
             message: "Disponibilidade atualizada."
@@ -262,6 +241,63 @@ export async function updateAvailableLots(req: Request, res: Response) {
         return res.status(500).json({
             success: false,
             message: "Erro ao atualizar disponibilidade."
+        });
+    }
+}
+
+// Função usada para pegar produtos válidos
+export async function getValidLots(req: Request, res: Response) {
+    try {
+        const sql: string = `
+        SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available
+        FROM products AS p
+        INNER JOIN lots AS l ON l.codProduct = p.codProduct
+            WHERE l.expirationDate >= CURDATE()
+            AND l.quantity > 0
+            AND l.deleted = 0;`;
+
+        const [result] = await conn.query<RowDataPacket[]>(sql);
+        console.log(result);
+
+        getIO().emit("stock:update");
+
+        return res.status(200).json({
+            success: true,
+            data: result
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar lotes."
+        });
+    }
+}
+
+
+// Função usada para pegar produtos inválidos
+export async function getInvalidLots(req: Request, res: Response) {
+    try {
+        const sql: string = `
+            SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available
+            FROM products AS p
+            INNER JOIN lots AS l ON l.codProduct = p.codProduct
+            WHERE
+                p.codProduct IS NULL
+                OR l.quantity IS NULL OR l.quantity <= 0
+                OR l.entryDate IS NULL
+                OR l.expirationDate IS NULL
+                OR l.expirationDate < l.entryDate;`
+
+        const [result] = await conn.query<RowDataPacket[]>(sql);
+
+        return res.status(200).json({
+            success: true,
+            data: result
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Erro ao buscar lotes."
         });
     }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CardLot.css";
 import type { Lots } from "../../types/Lot";
 import api from "../../services/api";
@@ -34,9 +34,6 @@ function CardLot({ lot }: { lot: Lots }) {
 
             setAvailable(newAvailability);
 
-            Swal.fire({
-                title: "Disponibilidade atualizada com sucesso!"
-            });
         } catch (error) {
             console.log(error);
             Swal.fire({
@@ -44,6 +41,38 @@ function CardLot({ lot }: { lot: Lots }) {
             });
         }
     }
+
+    async function deleteLot(codLot: string): Promise<void> {
+        try {
+
+            const response = await fetch(`${api}/lots/${codLot}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao deletar lote.");
+            }
+
+            setOpenModalLot(false);
+
+            Swal.fire({
+                title: "Lote deletado com sucesso!"
+            });
+        } catch (error) {
+            console.error("Erro detalhado:", error);
+            Swal.fire({
+                title: "Erro ao deletar lote."
+            });
+        }
+    }
+
+    useEffect(() => {
+        console.log("Lote:", lot.codLot, "| Disponibilidade:", lot.available);
+        setAvailable(Number(lot.available));
+    }, [lot.available])
 
     return (
         <div className="card-lot">
@@ -101,6 +130,11 @@ function CardLot({ lot }: { lot: Lots }) {
                             <p><i className="bi bi-calendar-fill"></i> Data de entrada: <strong>{formatDate(lot.entryDate)}</strong></p>
                             <p><i className="bi bi-calendar-check-fill"></i> Data de validade: <strong>{formatDate(lot.expirationDate)}</strong></p>
                         </div>
+                    </div>
+                    <div className="card-modal-footer">
+                        <button className="btn-delete" onClick={() => {
+                            deleteLot(lot.codLot);
+                        }}>Deletar lote</button>
                     </div>
                 </div>
             )}

@@ -23,6 +23,7 @@ create table if not exists lots(
     quantity int not null,
     entryDate date not null default (current_date),
     expirationDate date not null,
+    deleted tinyint(1) default 0,
     foreign key (codProduct) references products(codProduct)
 );
 
@@ -86,3 +87,11 @@ insert into roles(name) values
 ("admin"),
 ("seller"),
 ("stock_clerk");
+
+create table discounts(
+    idDiscount int auto_increment primary key,
+    codProduct char(5) not null unique,
+    discount decimal(5, 2) not null,
+    active tinyint default 1,
+    foreign key (codProduct) REFERENCES products(codProduct)
+);
