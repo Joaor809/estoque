@@ -12,6 +12,7 @@ import CardCart from "../../../components/CardCart/CardCart";
 import api from "../../../services/api";
 import Swal from "sweetalert2";
 import { buttonsSeller } from "../../../config/NavbarItems";
+import socket from "../../../services/socket";
 
 function Sell() {
 
@@ -135,29 +136,38 @@ function Sell() {
         }
     }
 
-    useEffect(() => {
-        async function loadProducts() {
-            try {
-                const response = await getProducts()
+    async function loadProducts() {
+        try {
+            const response = await getProducts()
 
-                if (!response.success) {
-                    setModalTitle("Erro");
-                    setModalMessage(response.message);
-
-                    setModalOpen(true)
-                    return;
-                }
-
-                setProducts(response.data)
-
-            } catch (error) {
+            if (!response.success) {
                 setModalTitle("Erro");
-                setModalMessage("Não foi possível conectar ao servidor.");
-                setModalOpen(true);
-            }
-        }
+                setModalMessage(response.message);
 
-        loadProducts()
+                setModalOpen(true)
+                return;
+            }
+
+            setProducts(response.data)
+
+        } catch (error) {
+            setModalTitle("Erro");
+            setModalMessage("Não foi possível conectar ao servidor.");
+            setModalOpen(true);
+        }
+    }
+
+    useEffect(() => {
+        socket.connect();
+
+        loadProducts();
+
+        socket.on("stock:update", loadProducts);
+
+        return () => {
+            socket.off("stock.update", loadProducts);
+            socket.disconnect();
+        }
     }, [])
 
     return (

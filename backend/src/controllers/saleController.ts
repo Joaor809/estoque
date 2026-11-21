@@ -110,7 +110,6 @@ export async function getSales(req: Request, res: Response) {
         `
         const [response] = await conn.query(sql);
 
-        getIO().emit("stock:update");
         getIO().emit("sales:update");
 
         return res.status(200).json({

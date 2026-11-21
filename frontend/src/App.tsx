@@ -4,7 +4,8 @@ import Sales from "./pages/Seller/Sales/Sales.tsx";
 import Sell from "./pages/Seller/Sell/Sell";
 import ProductsSeller from "./pages/Seller/Products/Products.tsx";
 import ProductsStockClerk from "./pages/Stock_Clerk/Products/Products.tsx";
-import Lots from "./pages/Stock_Clerk/Lots/Lots.tsx";
+import LotsStockClerk from "./pages/Stock_Clerk/Lots/Lots.tsx";
+import SalesStockClerk from "./pages/Stock_Clerk/Sales/Sales.tsx";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/seller/sales/" element={<Sales/>} />
         <Route path="/seller/products" element={<ProductsSeller/>} />
         <Route path="/stock_clerk/products" element={<ProductsStockClerk/>} />
-        <Route path="/stock_clerk/lots" element={<Lots/>} />
+        <Route path="/stock_clerk/lots" element={<LotsStockClerk/>} />
+        <Route path="/stock_clerk/sales" element={<SalesStockClerk/>} />
       </Routes>
     </BrowserRouter>
   )

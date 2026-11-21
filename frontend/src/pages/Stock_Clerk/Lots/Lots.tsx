@@ -12,7 +12,7 @@ import type { Product } from "../../../types/Product";
 import { header, headerWithJson } from "../../../services/headers";
 import Button from "../../../components/Button/Button";
 
-function Lots() {
+function LotsStockClerk() {
 
     const token = getToken();
 
@@ -194,4 +194,4 @@ function Lots() {
     );
 }
 
-export default Lots;
+export default LotsStockClerk;
