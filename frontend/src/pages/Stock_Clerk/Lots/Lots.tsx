@@ -78,7 +78,8 @@ function LotsStockClerk() {
         }
     }
 
-    async function registerLot() {
+    async function registerLot(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
         try {
 
             const response = await fetch(`${api}/lots`, {
@@ -91,7 +92,13 @@ function LotsStockClerk() {
                 })
             });
 
-            
+
+            if (!response.ok) {
+                console.log("Erro ao realizar a requisição");
+                return;
+            }
+
+
             Swal.fire({
                 title: "Lote cadastrado com sucesso!",
                 icon: "success"
@@ -157,7 +164,7 @@ function LotsStockClerk() {
                             <input type="date" value={expirationDate} onChange={(event) => setExpirationDate(event.target.value)} />
                         </div>
                         <div className="button-submit">
-                            <Button nameButton="Cadastrar" />
+                            <Button nameButton="Cadastrar" typeButton="submit"/>
                         </div>
                     </form>
                 </div>

@@ -72,6 +72,10 @@
     box-shadow: 2px 2px 4px 2px black;
 }
 
+.message-deleted {
+    text-align: center;
+    margin-top: 6px;
+}
 
 /* modal de informações do lote  */
 .card-modal-lots {

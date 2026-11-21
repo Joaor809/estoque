@@ -57,6 +57,8 @@
     border-radius: 12px;
     box-shadow: 2px 2px 8px 2px black;
     max-height: 75vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
 }
 
 .invalid-products h1 {
@@ -153,4 +155,32 @@
 .button-submit {
     display: flex;
     justify-content: center;
+}
+
+@media(max-width: 768px) {
+    .good-products .lots {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .invalid-products .lots {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .good-products .lots {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .invalid-products .lots {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
 }

@@ -5,6 +5,7 @@ import api from "../../services/api";
 import { formatDate } from "../../services/formatDate";
 import { getToken } from "../../services/authService";
 import Swal from "sweetalert2";
+import Button from "../Button/Button";
 
 function CardLot({ lot }: { lot: Lots }) {
 
@@ -102,9 +103,15 @@ function CardLot({ lot }: { lot: Lots }) {
             </div>
             <div className="card-lot-footer">
                 <button type="button" className="button-modal-info-lot" onClick={() => setOpenModalLot(true)}><i className="bi bi-eye"></i> Ver mais</button>
-                <button className={available === 1 ? "btn-block" : "btn-release"} onClick={handleAvailability}>
-                    {available === 1 ? "Bloquear vendas" : "Liberar para vendas"}
-                </button>
+                {lot.deleted == 0 ? (
+                    <button className={available === 1 ? "btn-block" : "btn-release"} onClick={handleAvailability}>
+                        {available === 1 ? "Bloquear vendas" : "Liberar para vendas"}
+                    </button>
+                ) : (
+                    <div className="message-deleted">
+                        <h2>Produto já deletado</h2>
+                    </div>
+                )}
             </div>
             {openModalLot && (
                 <div className="card-modal-lots">
@@ -132,9 +139,13 @@ function CardLot({ lot }: { lot: Lots }) {
                         </div>
                     </div>
                     <div className="card-modal-footer">
-                        <button className="btn-delete" onClick={() => {
-                            deleteLot(lot.codLot);
-                        }}>Deletar lote</button>
+                        {lot.deleted === 0 ? (
+                            <button className="btn-delete" onClick={() => {
+                                deleteLot(lot.codLot);
+                            }}>Deletar lote</button>
+                        ) : (
+                            <Button nameButton="Produto já deletado" typeButton="button" />
+                        )}
                     </div>
                 </div>
             )}

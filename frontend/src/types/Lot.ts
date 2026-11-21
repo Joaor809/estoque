@@ -10,4 +10,5 @@ export type Lots = {
     lotTotalPrice: string;
     image: string;
     available: number;
+    deleted: number;
 }

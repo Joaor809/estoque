@@ -249,7 +249,7 @@ export async function updateAvailableLots(req: Request, res: Response) {
 export async function getValidLots(req: Request, res: Response) {
     try {
         const sql: string = `
-        SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available
+        SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available, l.deleted
         FROM products AS p
         INNER JOIN lots AS l ON l.codProduct = p.codProduct
             WHERE l.expirationDate >= CURDATE()
@@ -278,7 +278,7 @@ export async function getValidLots(req: Request, res: Response) {
 export async function getInvalidLots(req: Request, res: Response) {
     try {
         const sql: string = `
-            SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available
+            SELECT p.codProduct, l.codLot, p.name, l.quantity, l.entryDate, l.expirationDate, p.price, p.mark, l.available, l.deleted
             FROM products AS p
             INNER JOIN lots AS l ON l.codProduct = p.codProduct
             WHERE
@@ -286,7 +286,8 @@ export async function getInvalidLots(req: Request, res: Response) {
                 OR l.quantity IS NULL OR l.quantity <= 0
                 OR l.entryDate IS NULL
                 OR l.expirationDate IS NULL
-                OR l.expirationDate < l.entryDate;`
+                OR l.expirationDate < l.entryDate
+                OR l.deleted = 1;`
 
         const [result] = await conn.query<RowDataPacket[]>(sql);
 
