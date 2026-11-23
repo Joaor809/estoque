@@ -6,15 +6,21 @@ export const getToken = () => {
     return localStorage.getItem("token");
 };
 
-export const getRole = (): number => {
-    const idRole = localStorage.getItem("idRole");
+export const getIdUser = () => {
+    return localStorage.getItem("idUser");
+}
 
-    return Number(idRole);
+export const whatRole = async (idUser: string): Promise<string> => {
+    const response = await fetch(`${api}/users/whatRole/${idUser}`);
+    const data = await response.json();
+
+    return data.role;
 };
 
-export const login = (token: string, idRole: number) => {
+
+export const loginAuthenticated = (token: string, idUser: string) => {
     localStorage.setItem("token", token);
-    localStorage.setItem("idRole", String(idRole));
+    localStorage.setItem("idUser", idUser);
 };
 
 export const logout = () => {

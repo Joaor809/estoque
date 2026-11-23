@@ -4,6 +4,7 @@ import "./Login.css";
 import Button from "../../components/Button/Button";
 import api from "../../services/api";
 import { headerWithJson } from "../../services/headers";
+import { loginAuthenticated, logout, whatRole } from "../../services/authService";
 
 function Login() {
 
@@ -26,27 +27,28 @@ function Login() {
 
         const data = await response.json();
 
+        const token: string = data.token;
+        const idUser: string = data.user.idUser
 
+        loginAuthenticated(token, idUser);
 
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("idRole", String(data.user.idRole));
+        const role = await whatRole(idUser);
 
-        switch (Number(data.user.idRole)) {
-            case 1:
+        switch (role) {
+            case "admin":
                 navigate("/admin");
                 break;
 
-            case 2:
+            case "seller":
                 navigate("/seller");
                 break;
 
-            case 3:
+            case "stock_clerk":
                 navigate("/stock_clerk");
                 break;
 
             default:
-                localStorage.removeItem("token");
-                localStorage.removeItem("idRole");
+                logout();
                 navigate("/unauthorized");
         }
     }

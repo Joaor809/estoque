@@ -90,47 +90,6 @@ export async function getUsers(req: Request, res: Response) {
     }
 }
 
-// Função usada para buscar usuários pelo CPF
-export async function getUserByCPF(req: Request, res: Response) {
-    const { cpf } = req.params;
-
-    if (!cpf) {
-        return res.status(400).json({
-            success: false,
-            message: "CPF não fornecido."
-        });
-    }
-
-    try {
-        const sql: string = `
-            SELECT
-                u.idUser 
-	            u.name,
-                u.userName, 
-                CAST(AES_DECRYPT(u.cpf, ?) AS CHAR) AS cpf, 
-                CAST(AES_DECRYPT(u.email, ?) AS CHAR) AS email,
-                CAST(AES_DECRYPT(u.telephone, ?) AS CHAR) AS telephone, 
-                r.name as role
-            FROM users AS u
-            INNER JOIN roles AS r ON u.idRole = r.idRole
-            WHERE u.cpf = AES_ENCRYPT(?, ?);
-        `;
-
-        const [response] = await conn.query(sql, [key, key, key, cpf, key]);
-
-        return res.status(200).json({
-            success: true,
-            data: response
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            success: false,
-            message: "Erro ao buscar usuário."
-        });
-    }
-}
-
 // Função usada para editar dados dos usuários
 export async function updateUser(req: Request, res: Response) {
     const { idUser } = req.params;
@@ -179,16 +138,21 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function whatRole(req: Request, res: Response) {
-    const { idRole } = req.params;
-    console.log(idRole);
-    try {
-        const sql: string = "SELECT name FROM roles WHERE idRole = ?";
+    const { idUser } = req.params;
 
-        const [response] = await conn.query<RowDataPacket[]>(sql, [idRole]);
+    try {
+        const sql: string = `
+            SELECT r.name AS 'role'
+            FROM users AS u
+            INNER JOIN roles AS r ON r.idRole = u.idRole
+            WHERE u.idUser = ?;
+        `;
+
+        const [response] = await conn.query<RowDataPacket[]>(sql, [idUser]);
 
         return res.status(200).json({
             success: true,
-            role: response[0]?.name
+            role: response[0]?.role
         });
     } catch (error) {
         return res.status(500).json({

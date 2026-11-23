@@ -1,22 +1,52 @@
+
 import { Navigate, Outlet } from "react-router-dom";
-import { getRole, getToken } from "../services/authService";
+import { getIdUser, getToken, logout, whatRole } from "../services/authService";
+import { useEffect, useState } from "react";
 
 interface ProtectedRouteProps {
-    allowedRoles: number[];
+    allowedRoles: string[];
 }
 
 function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     const token = getToken();
-    const idRole = getRole();
+    const idUser = getIdUser();
 
-    if (!token) {
-        return <Navigate to="/login" replace/>
-    }
-    if (idRole === null || !allowedRoles.includes(Number(idRole))) {
-        return <Navigate to="/unauthorized" replace/>
+    const [role, setRole] = useState<string | null>(null);
+    const [checked, setChecked] = useState(false);
+
+    useEffect(() => {
+        async function checkRole() {
+            try {
+                if (!idUser) return;
+
+                const userRole = await whatRole(idUser);
+                setRole(userRole);
+            } catch (error) {
+                console.error("Erro ao verificar cargo:", error);
+            } finally {
+                setChecked(true);
+            }
+        }
+
+        if (token && idUser) {
+            checkRole();
+        }
+    }, [token, idUser]);
+
+    if (!token || !idUser) {
+        return <Navigate to="/login" replace />;
     }
 
-    return <Outlet/>
+    if (!checked) {
+        return null;
+    }
+
+    if (!role || !allowedRoles.includes(role)) {
+        logout();
+        return <Navigate to="/unauthorized" replace />;
+    }
+
+    return <Outlet />;
 }
 
 export default ProtectedRoute;

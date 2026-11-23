@@ -63,9 +63,7 @@ export default async function login(req: Request, res: Response) {
             success: true,
             token: token,
             user: {
-                idUser: user.idUser,
-                userName: user.userName,
-                idRole: user.idRole
+                idUser: user.idUser
             }
         });
 
