@@ -38,9 +38,6 @@ function LotsStockClerk() {
             setValidLots(data.data);
         } catch (error) {
             console.log(error);
-            Swal.fire({
-                title: "Erro ao buscar lotes"
-            })
         }
     }
 
@@ -57,9 +54,6 @@ function LotsStockClerk() {
             setInvalidLots(data.data);
         } catch (error) {
             console.log(error);
-            Swal.fire({
-                title: "Erro ao buscar lotes"
-            })
         }
     }
 
@@ -72,9 +66,7 @@ function LotsStockClerk() {
 
             setProducts(data.data)
         } catch (error) {
-            Swal.fire({
-                title: "Erro ao buscar produtos."
-            });
+            console.log(error)
         }
     }
 
@@ -105,10 +97,7 @@ function LotsStockClerk() {
             });
             setOpenModal(false);
         } catch (error) {
-            console.log("error")
-            Swal.fire({
-                title: "Erro ao cadastrar lote."
-            })
+            console.log(error)
         }
     }
 

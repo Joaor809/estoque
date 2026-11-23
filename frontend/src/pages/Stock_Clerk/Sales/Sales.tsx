@@ -24,17 +24,19 @@ function SalesStockClerk() {
             setSales(data.data);
         } catch (error) {
             console.log(error);
-            Swal.fire({
-                title: "Erro ao carregar vendas."
-            });
         }
     }
 
     async function loadProductsSold(idSale: number): Promise<void> {
-        const response = await fetch(`${api}/sales/items/${idSale}`, header);
-        const data = await response.json();
+        try {
 
-        setListProducts(data.data);
+            const response = await fetch(`${api}/sales/items/${idSale}`, header);
+            const data = await response.json();
+            
+            setListProducts(data.data);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {

@@ -16,6 +16,7 @@
     text-align: center;
     max-height: 80vh;
     overflow-y: auto;
+    box-shadow: 2px 2px 8px 4px gray;
 }
 
 /* header do card  */

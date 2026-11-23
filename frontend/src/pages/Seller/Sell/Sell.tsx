@@ -3,7 +3,6 @@ import Button from "../../../components/Button/Button";
 import Navbar from "../../../components/Navbar/Navbar";
 import Products from "../../../components/Products/Products";
 import { useEffect, useState } from "react";
-import Input from "../../../components/Input/Input";
 import type { Product } from "../../../types/Product";
 import getProducts from "../../../services/getProducts";
 import Modal from "../../../components/Modal/Modal";
@@ -194,8 +193,8 @@ function Sell() {
                             <section className="input-code">
 
                                 <div className="inputs">
-                                    <Input type="string" placeholder="código" value={codProduct} onChange={setCodProduct} />
-                                    <Input type="number" placeholder="quantidade" value={quantity} onChange={setQuantity} />
+                                    <input type="string" placeholder="código" value={codProduct} onChange={(event) => setCodProduct(event.target.value)} />
+                                    <input type="number" placeholder="quantidade" value={quantity} onChange={(event) => setQuantity(event.target.value)} />
                                 </div>
                                 <Button nameButton="Adicionar" typeButton="submit" />
                             </section>

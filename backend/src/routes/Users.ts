@@ -8,7 +8,7 @@ const router = Router()
 router.get("/", authMiddleware, verifyRole(1), getUsers);
 router.get("/:cpf", authMiddleware, verifyRole(1), getUserByCPF);
 router.get("/roles/:idRole", authMiddleware, whatRole);
-router.post("/", authMiddleware, postUser);
+router.post("/", postUser);
 router.put("/:idUser", authMiddleware, updateUser);
 
 export default router;

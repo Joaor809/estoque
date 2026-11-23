@@ -1,0 +1,358 @@
+.login-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: var(--font);
+}
+
+.card-login {
+    width: 60vw;
+    min-height: 60vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    box-shadow: 2px 3px 8px 3px gray;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-login .info-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-image: url("/estoque.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.card-login .info-card i {
+    font-size: 7rem;
+    text-shadow: 2px 2px 3px black;
+}
+
+.card-login .info-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 2px black;
+}
+
+.card-login .info-card span {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    text-shadow: 2px 3px 3px black;
+    font-size: 18px;
+}
+
+.form-login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.card-login .form-login > i {
+    font-size: 5rem;
+    text-shadow: 2px 2px 3px black;
+}
+
+.card-login .form-login h2 {
+    font-size: 2.2rem;
+}
+
+.card-login .form-login p {
+    margin: .8rem;
+    font-size: 18px;
+}
+
+.card-login .form-login .form-group {
+    position: relative;
+    width: 100%;
+    margin: 12px 0;
+}
+
+.card-login .form-login .form-group input {
+    padding: 10px 45px 10px 10px;
+    font-size: 18px;
+    width: 80%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.card-login .form-login .form-group input:focus {
+    outline: none;
+    border: 1px solid #5959d9;
+    box-shadow: 1px 1px 6px 2px #3996c1;
+}
+
+.button-password {
+    position: absolute;
+    right: 12%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.button-password i {
+    font-size: 28px !important;
+    text-shadow: none !important;
+}
+
+.button-register button {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 22px;
+}
+
+@media (max-width: 1024px) {
+    .card-login {
+        width: 85vw;
+    }
+
+    .card-login .info-card h1 {
+        font-size: 2rem;
+    }
+
+    .card-login .info-card i {
+        font-size: 5rem;
+    }
+
+    .card-login .form-login h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .login-container {
+        padding: 15px;
+    }
+
+    .card-login {
+        width: 95vw;
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-login .info-card {
+        min-height: 230px;
+        padding: 20px 10px;
+        box-sizing: border-box;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .card-login .info-card i {
+        font-size: 3.5rem;
+    }
+
+    .card-login .info-card h1 {
+        font-size: 1.6rem;
+        margin-bottom: .7rem;
+    }
+
+    .card-login .info-card span {
+        font-size: 14px;
+    }
+
+    .form-login {
+        padding: 25px 0;
+        box-sizing: border-box;
+    }
+
+    .card-login .form-login > i {
+        font-size: 3.5rem;
+    }
+
+    .card-login .form-login h2 {
+        font-size: 1.7rem;
+    }
+
+    .card-login .form-login p {
+        font-size: 15px;
+    }
+
+    .card-login .form-login .form-group input {
+        width: 85%;
+    }
+
+    .button-password {
+        right: 7.5%;
+    }
+
+    .button-register button {
+        width: 85%;
+    }
+}
+
+@media (max-width: 480px) and (orientation: portrait) {
+    .card-login {
+        width: 95vw;
+    }
+
+    .card-login .info-card {
+        min-height: 190px;
+    }
+
+    .card-login .info-card i {
+        font-size: 2.8rem;
+    }
+
+    .card-login .info-card h1 {
+        font-size: 1.35rem;
+    }
+
+    .card-login .form-login {
+        padding: 20px 0;
+    }
+
+    .card-login .form-login > i {
+        font-size: 3rem;
+    }
+
+    .card-login .form-login h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .login-container {
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .card-login {
+        width: 90vw;
+        min-height: 90vh;
+    }
+
+    .card-login .info-card {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .card-login .info-card i {
+        font-size: 3rem;
+    }
+
+    .card-login .info-card h1 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .card-login .info-card span {
+        font-size: 14px;
+    }
+
+    .form-login {
+        padding: 10px 0;
+        box-sizing: border-box;
+    }
+
+    .card-login .form-login > i {
+        font-size: 2.5rem;
+    }
+
+    .card-login .form-login h2 {
+        font-size: 1.5rem;
+        margin: 8px 0;
+    }
+
+    .card-login .form-login p {
+        font-size: 14px;
+        margin: 5px;
+    }
+
+    .card-login .form-login .form-group {
+        margin: 8px 0;
+    }
+
+    .card-login .form-login .form-group input {
+        padding: 8px 40px 8px 10px;
+        font-size: 15px;
+    }
+
+    .button-password {
+        right: 12%;
+    }
+
+    .button-password i {
+        font-size: 22px !important;
+    }
+
+    .button-register button {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .login-container {
+        padding: 10px;
+    }
+
+    .card-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 95vw;
+        min-height: 95vh;
+    }
+
+    .card-login .info-card {
+        border-radius: 12px 0 0 12px;
+    }
+
+    .card-login .info-card i {
+        font-size: 2.3rem;
+    }
+
+    .card-login .info-card h1 {
+        font-size: 1.2rem;
+    }
+
+    .card-login .info-card span {
+        font-size: 12px;
+    }
+
+    .card-login .form-login > i {
+        font-size: 2.2rem;
+    }
+
+    .card-login .form-login h2 {
+        font-size: 1.3rem;
+    }
+
+    .card-login .form-login p {
+        font-size: 12px;
+    }
+
+    .card-login .form-login .form-group input {
+        width: 85%;
+    }
+
+    .button-password {
+        right: 7.5%;
+    }
+
+    .button-register button {
+        width: 85%;
+    }
+}
