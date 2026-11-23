@@ -114,7 +114,6 @@ function LotsStockClerk() {
         return () => {
             socket.off("stock:update", getValidLots);
             socket.off("stock:update", getInvalidLots);
-            socket.disconnect();
         }
     }, [])
 

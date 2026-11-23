@@ -48,7 +48,6 @@ function SalesStockClerk() {
 
         return () => {
             socket.off("sales:update", loadSales);
-            socket.disconnect();
         }
     })
 

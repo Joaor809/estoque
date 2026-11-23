@@ -1,4 +1,4 @@
-import "./Products.css";
+git import "./Products.css";
 import Navbar from "../../../components/Navbar/Navbar.tsx";
 import { useEffect, useState } from "react";
 import type { Product } from "../../../types/Product.ts";

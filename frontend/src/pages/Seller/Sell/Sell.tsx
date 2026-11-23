@@ -165,7 +165,6 @@ function Sell() {
 
         return () => {
             socket.off("stock.update", loadProducts);
-            socket.disconnect();
         }
     }, [])
 

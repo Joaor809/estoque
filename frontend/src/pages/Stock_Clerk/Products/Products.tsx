@@ -251,7 +251,6 @@ function ProductsStockClerk() {
 
         return () => {
             socket.off("products:update", loadProducts);
-            socket.disconnect();
         }
 
     }, [])

@@ -53,7 +53,6 @@ export default function Sales() {
         // remove o evento e encerra a conexão ao sair da página
         return () => {
             socket.off("stock:update", handleStockUpdate);
-            socket.disconnect();
         }
 
     }, [])

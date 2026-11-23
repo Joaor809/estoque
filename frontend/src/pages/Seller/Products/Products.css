@@ -20,6 +20,18 @@
     margin-right: 4rem;
 }
 
+.header-products-page .search-products-page form input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid gray;
+    transition: all .1s ease;
+}
+.header-products-page .search-products-page form input:focus{
+    outline: none;
+    border: 1px solid #465abe;
+    box-shadow: 2px 2px 6px 3px #5454b1;
+}
+
 .header-products-page .search-products-page form select {
     padding: 10px;
     outline: none;
