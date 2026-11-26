@@ -72,6 +72,11 @@
     gap: 10px;
 }
 
+.inputs input{
+    padding: 6px;
+    outline: none;
+}
+
 
 
 /* estilização do botão de venda */

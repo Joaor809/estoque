@@ -1,24 +1,27 @@
-.navbar{
+
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: auto;
+    box-sizing: border-box;
     background-color: #e6a050;
-    padding: 10px;
+    padding: 10px 25px;
 }
 
 .logo {
     width: 80px;
     height: auto;
 }
-.nav-links{
+
+.nav-links {
     display: flex;
-    right: 0;
-    gap: 15px;
+    align-items: center;
+    gap: 10px;
 }
 
 .btn-link {
+    display: inline-block;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -26,32 +29,77 @@
     text-shadow: 0 2px black;
     border-radius: 10px;
     color: white;
-    margin: 10px;
     padding: 14px;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
 }
-.btn-link:hover{
+
+.btn-link:hover {
     background-color: #ffcb8f;
     transform: translateY(-2px);
     box-shadow: 0 2px 3px black;
 }
 
-@media(max-width: 480px) {
-    .navbar{
-        display: flex;
-        flex-direction: column;
+/* Tablets */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px;
     }
+
+    .logo {
+        width: 65px;
+    }
+
+    .nav-links {
+        gap: 5px;
+    }
+
     .btn-link {
-        margin: 0;
-        margin-top: 10px;
-        padding: 8px;
+        font-size: 15px;
+        padding: 10px;
     }
 }
 
-@media(max-width: 360px) {
+/* Celulares */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .logo {
+        width: 60px;
+    }
+
     .nav-links {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 5px;
+    }
+
+    .btn-link {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
         text-align: center;
+        font-size: 15px;
+        padding: 12px;
+        margin: 0;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 400px) {
+    .logo {
+        width: 50px;
+    }
+
+    .btn-link {
+        font-size: 14px;
+        padding: 10px;
     }
 }

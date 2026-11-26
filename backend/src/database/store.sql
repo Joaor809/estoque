@@ -14,6 +14,7 @@ create table if not exists products(
     mark varchar(50) not null,
     price decimal(10,2) not null,
     idCategory int not null,
+    image varchar(255),
     foreign key (idCategory) references categorys (idCategory)
 );
 
@@ -23,6 +24,7 @@ create table if not exists lots(
     quantity int not null,
     entryDate date not null default (current_date),
     expirationDate date not null,
+    available tinyint(1) default 0,
     deleted tinyint(1) default 0,
     foreign key (codProduct) references products(codProduct)
 );
@@ -39,7 +41,6 @@ create table if not exists item_sale(
     codLot char(8) not null,
     quantity int not null,
     price decimal(10,2) not null,
-    available boolean default 0,
     foreign key (idSale) references sales(idSale),
     foreign key (codLot) references lots(codLot)
 );

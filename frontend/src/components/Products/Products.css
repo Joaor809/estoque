@@ -21,6 +21,7 @@
 .card-product{
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: var(--bg-card);
     box-shadow: 0 2px 3px -2px gray;
     width: 18rem;

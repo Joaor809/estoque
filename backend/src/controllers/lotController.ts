@@ -266,6 +266,7 @@ export async function getValidLots(req: Request, res: Response) {
             data: result
         });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Erro ao buscar lotes."
@@ -296,6 +297,7 @@ export async function getInvalidLots(req: Request, res: Response) {
             data: result
         });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Erro ao buscar lotes."

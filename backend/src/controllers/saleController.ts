@@ -27,7 +27,7 @@ export async function shopping(req: Request, res: Response) {
 
     try {
         
-        (await connection).beginTransaction()
+        await connection.beginTransaction()
         const [result] = await connection.query<ResultSetHeader>("INSERT INTO sales (totalValue) VALUES (?);", totalValue)
         const idSale = result.insertId;
 
@@ -40,20 +40,16 @@ export async function shopping(req: Request, res: Response) {
 	            AND l.quantity > 0
 	            AND l.expirationDate >= CURDATE()
 	            AND l.available = 1
-            ORDER BY l.expirationDate ASC;
+            ORDER BY l.expirationDate ASC
+            FOR UPDATE;
         `
             const [lots] = await connection.query<Lot[]>(sql, [product.codProduct])
 
             if (lots.length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: `Nenhum lote disponível para o produto: ${product.codProduct}`
-                })
+                throw new Error(`Nenhum lote disponível para o produto: ${product.codProduct}`);
             }
 
-            let remaining = product.quantity;
-            
-            
+            let remaining = product.quantity;    
             
             for (const lot of lots) {
                 if (remaining <= 0) {
@@ -71,13 +67,10 @@ export async function shopping(req: Request, res: Response) {
             
             
             if (remaining > 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: `Estoque insuficiente para o produto: ${product.codProduct}`
-                })
+                throw new Error(`Estoque insuficiente para o produto: ${product.codProduct}`);
             }
         }
-        (await connection).commit()
+        await connection.commit()
 
         getIO().emit("stock:update");
         getIO().emit("sales:update");
@@ -88,14 +81,14 @@ export async function shopping(req: Request, res: Response) {
         });
         
     } catch (error) {
-        (await connection).rollback()
+        await connection.rollback()
         console.log(error)
         return res.status(500).json({
             success: false,
             message: "Erro ao realizar venda"
         });
     } finally {
-        (await connection).release()
+        await connection.release()
     }
 
 }

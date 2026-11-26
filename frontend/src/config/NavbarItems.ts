@@ -5,10 +5,10 @@ export const buttonsSeller = [
 ];
 
 export const buttonsAdmin = [
-    { name: "Produtos", link: "/products" },
-    { name: "Vender", link: "/sell" },
-    { name: "Vendas", link: "/sales" },
-    { name: "Estoque", link: "/lots" }
+    { name: "Produtos", link: "/admin/products" },
+    { name: "Vender", link: "/admin/sell" },
+    { name: "Vendas", link: "/admin/sales" },
+    { name: "Estoque", link: "/admin/lots" }
 ];
 
 export const buttonsStockClerck = [

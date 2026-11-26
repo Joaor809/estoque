@@ -1,10 +1,7 @@
 import { io } from "socket.io-client";
-import api from "./api";
 
 // cria uma conexão com o servidor Socket.IO
-const socket = io(api, {
-    autoConnect: false
-})
+const socket = io(import.meta.env.API);
 
 // exporta a conexão
 export default socket;

@@ -1,3 +1,4 @@
+import { logout } from "../../services/authService";
 import "./Navbar.css";
 
 interface button {
@@ -22,7 +23,9 @@ function Navbar({ btn }: NavbarProps) {
                         {item.name}
                     </a>
                 ))}
-                <a className="btn-link">Sair</a>
+                <a className="btn-link" onClick={() => {
+                    logout();
+                }}>Sair</a>
             </div>
         </nav>
     )

@@ -117,6 +117,8 @@
 
 /* cards dos produtos */
 .card-products-page {
+    display: flex;
+    align-items: center;
     box-shadow: 0 2px 6px 2px gray;
     border-radius: 10px;
     padding: 16px;

@@ -11,8 +11,8 @@ export const getIdUser = () => {
 }
 
 export const whatRole = async (idUser: string): Promise<string> => {
-    const response = await fetch(`${api}/users/whatRole/${idUser}`);
-    const data = await response.json();
+    const response = await api.get(`/users/whatRole/${idUser}`);
+    const data = await response.data;
 
     return data.role;
 };
@@ -25,5 +25,6 @@ export const loginAuthenticated = (token: string, idUser: string) => {
 
 export const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("idRole");
+    localStorage.removeItem("idUser");
+    window.location.reload();
 };

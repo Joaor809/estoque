@@ -68,7 +68,7 @@ export default async function login(req: Request, res: Response) {
         });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Erro ao fazer login!"

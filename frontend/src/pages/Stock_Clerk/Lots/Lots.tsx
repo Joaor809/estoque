@@ -28,11 +28,7 @@ function LotsStockClerk() {
     async function getValidLots() {
         try {
 
-            const response = await fetch(`${api}/lots/valid`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const response = await fetch(`${api}/lots/valid`, header);
             const data = await response.json();
 
             setValidLots(data.data);
@@ -43,11 +39,7 @@ function LotsStockClerk() {
 
     async function getInvalidLots() {
         try {
-            const response = await fetch(`${api}/lots/invalid`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const response = await fetch(`${api}/lots/invalid`, header);
 
             const data = await response.json();
 

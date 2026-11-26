@@ -1,17 +1,15 @@
-    import api from "../../services/api";
-    import "./Products.css";
-    import { useEffect, useState } from "react";
-    import type { Product } from "../../types/Product";
-    import getProducts from "../../services/getProducts";
+import api, { API_URL } from "../../services/api";
+import "./Products.css";
+import { useEffect, useState } from "react";
+import type { Product } from "../../types/Product";
+import getProducts from "../../services/getProducts";
 import socket from "../../services/socket";
+import { getToken } from "../../services/authService";
 
     function Products() {
         const [products, setProducts] = useState<Product[]>([]);
         
-        const token = localStorage.getItem("token");
-        if (!token) {
-            return window.location.href = "/login";
-        }
+        const token = getToken();
 
         useEffect(() => {
             async function loadProducts() {
@@ -52,7 +50,7 @@ import socket from "../../services/socket";
                     products.map((product) => (
                         <div className="card-product" key={product.codProduct}>
                             <div className="card-img">
-                                <img src={`${api}${product.image}`} alt={product.name} />
+                                <img src={`${API_URL}${product.image}`} alt={product.name} />
                             </div>
                             <div className="card-info">
                                 <h2>{product.name}</h2>

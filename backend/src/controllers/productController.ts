@@ -24,7 +24,7 @@ export async function postProducts(req: Request, res: Response) {
         // Gera um código único para o produto
         while (exists && attempts < 5) {
 
-            codProduct = generateCode(10000000, 90000000);
+            codProduct = generateCode(10000, 90000);
 
             const [response] = await conn.query<RowDataPacket[]>(
                 "SELECT * FROM products WHERE codProduct = ?",
@@ -120,7 +120,7 @@ export async function getAvailableProducts(req: Request, res: Response) {
             INNER JOIN lots AS l ON l.codProduct = p.codProduct
             WHERE l.codProduct = p.codProduct
                 AND l.available = 1
-            GROUP BY p.name;
+            GROUP BY p.codProduct, p.name, p.mark, p.price, c.name, p.image;
         `;
 
         const [response] = await conn.query(sql);

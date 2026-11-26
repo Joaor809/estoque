@@ -17,7 +17,7 @@ export default function CardProduct({ product }: CardProductProps) {
                 <h2>{product.name}</h2>
                 <p>Cod: <strong>{product.codProduct}</strong></p>
                 <p>Marca: {product.mark}</p>
-                <p>Preço: {product.price.toLocaleString("pt-BR", {
+                <p>Preço: {Number(product.price).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL"
                 })}</p>
